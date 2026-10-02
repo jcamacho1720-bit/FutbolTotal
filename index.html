@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fútbol Total | Matchday Club & Canchas</title>
-    <meta name="description" content="Reserva de canchas de fútbol exclusivas, alineaciones tácticas y servicios matchday premium.">
+    <meta name="description" content="Reserva de canchas de fútbol exclusivas y servicios matchday VIP.">
     
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -120,13 +120,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-display);
-            font-weight: 800;
+            font-weight: 900;
             font-size: 14px;
         }
 
         .brand-name {
-            font-family: var(--font-display);
             font-size: 17px;
             font-weight: 800;
             letter-spacing: -0.03em;
@@ -202,11 +200,10 @@
         }
 
         .hero-title {
-            font-family: var(--font-display);
-            font-size: 30px;
-            font-weight: 800;
-            line-height: 1.05;
-            letter-spacing: -0.04em;
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
             text-transform: uppercase;
         }
 
@@ -221,7 +218,7 @@
             line-height: 1.45;
         }
 
-        /* Enhanced Calendar Hub */
+        /* Enhanced Calendar Hub (Dual View: Strip vs Full Month Grid) */
         .calendar-hub {
             margin: 14px 0 16px;
         }
@@ -312,9 +309,8 @@
         }
 
         .cal-day-num {
-            font-family: var(--font-display);
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 900;
             color: var(--text-primary);
             line-height: 1.1;
             margin: 2px 0;
@@ -358,7 +354,6 @@
         }
 
         .month-title {
-            font-family: var(--font-display);
             font-size: 14px;
             font-weight: 800;
             text-transform: uppercase;
@@ -432,7 +427,7 @@
         .day-cell.active {
             background: var(--neon) !important;
             color: #000 !important;
-            font-weight: 800;
+            font-weight: 900;
             box-shadow: 0 4px 14px rgba(212, 255, 0, 0.25);
         }
 
@@ -645,7 +640,6 @@
         }
 
         .venue-title {
-            font-family: var(--font-display);
             font-size: 18px;
             font-weight: 800;
             color: var(--text-primary);
@@ -657,9 +651,8 @@
         }
 
         .price-val {
-            font-family: var(--font-display);
             font-size: 17px;
-            font-weight: 800;
+            font-weight: 900;
             color: var(--neon);
             line-height: 1;
         }
@@ -756,7 +749,7 @@
         /* Match Detail Screen */
         .detail-banner {
             position: relative;
-            height: 230px;
+            height: 240px;
             width: 100%;
             background-size: cover;
             background-position: center;
@@ -769,7 +762,7 @@
         .detail-banner-tint {
             position: absolute;
             inset: 0;
-            background: linear-gradient(0deg, var(--bg-surface) 8%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.75) 100%);
+            background: linear-gradient(0deg, var(--bg-surface) 10%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.75) 100%);
             z-index: 1;
         }
 
@@ -812,142 +805,107 @@
             font-weight: 800;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
         }
 
         .detail-name {
-            font-family: var(--font-display);
-            font-size: 24px;
-            font-weight: 800;
+            font-size: 26px;
+            font-weight: 900;
             letter-spacing: -0.03em;
             color: #fff;
         }
 
-        /* Sub Navigation Tabs */
-        .tab-bar-nav {
-            display: flex;
-            background: var(--bg-surface);
-            border-bottom: 1px solid var(--border-hairline);
-            position: sticky;
-            top: 65px;
-            z-index: 85;
+        /* High-Impact Match Info Showcase Card */
+        .match-showcase-card {
+            background: linear-gradient(135deg, #13131c 0%, #0c0c12 100%);
+            border: 1px solid var(--neon-border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin: 18px 0 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 25px rgba(212, 255, 0, 0.03);
+            position: relative;
+            overflow: hidden;
         }
 
-        .tab-nav-btn {
-            flex: 1;
-            padding: 13px 8px;
-            background: none;
-            border: none;
-            border-bottom: 2px solid transparent;
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
+        .showcase-accent-glow {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(212, 255, 0, 0.12) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+        }
+
+        .showcase-time-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-hairline);
+        }
+
+        .showcase-time-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            background: var(--neon-subtle);
+            border: 1px solid var(--neon-border);
+            color: var(--neon);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            transition: all 0.15s ease;
+            flex-shrink: 0;
         }
 
-        .tab-nav-btn.active {
+        .showcase-time-val {
+            font-size: 22px;
+            font-weight: 900;
+            color: #fff;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .showcase-time-sub {
+            font-size: 11px;
             color: var(--neon);
-            border-bottom-color: var(--neon);
-            background: var(--neon-subtle);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 2px;
         }
 
-        .tab-content-panel {
-            display: none;
-        }
-
-        .tab-content-panel.active {
-            display: block;
-        }
-
-        /* 2D Tactical Field */
-        .tactical-pitch-box {
-            background: radial-gradient(circle, #0d2816 0%, #06160b 100%);
-            border: 1px solid rgba(212, 255, 0, 0.25);
-            border-radius: var(--radius-lg);
-            padding: 16px 12px;
-            position: relative;
-            margin: 16px 0;
-            box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.7);
-        }
-
-        .field-midline {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .field-circle {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-        }
-
-        .squad-columns {
+        .showcase-details-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            position: relative;
-            z-index: 2;
+            gap: 12px;
         }
 
-        .team-column {
-            background: rgba(12, 12, 16, 0.75);
-            backdrop-filter: blur(8px);
-            border-radius: var(--radius-sm);
-            padding: 12px 10px;
-            border: 1px solid var(--border-hairline);
+        .showcase-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
         }
 
-        .team-column.neon-team {
-            border-top: 3px solid var(--neon);
+        .showcase-item-icon {
+            color: var(--text-muted);
+            margin-top: 1px;
         }
 
-        .team-column.blue-team {
-            border-top: 3px solid #38bdf8;
-        }
-
-        .team-column-title {
-            font-size: 11px;
-            font-weight: 800;
+        .showcase-item-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
         }
 
-        .player-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 0;
-            font-size: 11px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .pos-badge {
-            font-size: 9px;
+        .showcase-item-text {
+            font-size: 13px;
             font-weight: 700;
-            padding: 1px 4px;
-            border-radius: 3px;
-            background: var(--bg-elevated);
-            color: var(--neon);
+            color: #fff;
+            margin-top: 1px;
         }
 
         /* VIP Extras */
@@ -955,12 +913,12 @@
             background: var(--bg-card);
             border: 1px solid var(--border-hairline);
             border-radius: var(--radius-md);
-            padding: 14px;
+            padding: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             transition: all 0.2s ease;
         }
 
@@ -972,31 +930,39 @@
         .extras-card-item.selected {
             background: var(--neon-subtle);
             border-color: var(--neon-border);
+            box-shadow: 0 0 20px rgba(212, 255, 0, 0.08);
         }
 
         .extras-info-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             flex: 1;
         }
 
         .extras-icon-box {
-            width: 38px;
-            height: 38px;
+            width: 42px;
+            height: 42px;
             background: var(--bg-elevated);
-            border-radius: var(--radius-sm);
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--neon);
             border: 1px solid var(--border-hairline);
             flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+
+        .extras-card-item.selected .extras-icon-box {
+            background: var(--neon);
+            color: #000;
+            border-color: var(--neon);
         }
 
         .extras-title {
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 800;
             color: var(--text-primary);
         }
 
@@ -1008,22 +974,21 @@
         }
 
         .extras-price {
-            font-family: var(--font-display);
-            font-size: 13px;
-            font-weight: 800;
+            font-size: 14px;
+            font-weight: 900;
             color: var(--neon);
             white-space: nowrap;
         }
 
         .check-box-minimal {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 5px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 10px;
+            margin-left: 12px;
             transition: all 0.15s;
         }
 
@@ -1033,59 +998,10 @@
             color: #000;
         }
 
-        /* Split Payment */
-        .split-box-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-hairline);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            margin: 16px 0;
-        }
-
-        .split-row-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 9px 0;
-            border-bottom: 1px solid var(--border-hairline);
-        }
-
-        .status-pill-ok {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: var(--radius-full);
-            background: rgba(16, 185, 129, 0.12);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .status-pill-wait {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: var(--radius-full);
-            background: rgba(245, 158, 11, 0.12);
-            color: var(--gold);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-        }
-
-        /* Sticky Action Bar */
-        .floating-action-bar {
-            position: fixed;
-            bottom: 74px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            padding: 10px 20px;
-            background: rgba(12, 12, 16, 0.94);
-            backdrop-filter: blur(14px);
-            border-top: 1px solid var(--border-hairline);
-            z-index: 80;
+        /* Naturally embedded End-of-Page CTA Button */
+        .embedded-cta-container {
+            margin-top: 24px;
+            margin-bottom: 20px;
         }
 
         .btn-main-action {
@@ -1094,10 +1010,9 @@
             color: #000;
             border: none;
             border-radius: var(--radius-md);
-            padding: 15px 18px;
-            font-family: var(--font-display);
-            font-size: 14px;
-            font-weight: 800;
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 900;
             letter-spacing: 0.04em;
             text-transform: uppercase;
             display: flex;
@@ -1105,11 +1020,12 @@
             align-items: center;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 8px 25px rgba(212, 255, 0, 0.22);
         }
 
         .btn-main-action:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 25px rgba(212, 255, 0, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(212, 255, 0, 0.35);
         }
 
         /* Bottom Tab Navigation */
@@ -1152,33 +1068,6 @@
             color: var(--neon);
         }
 
-        /* Modals */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 300;
-            display: none;
-            align-items: flex-end;
-            justify-content: center;
-        }
-
-        .modal-overlay.open {
-            display: flex;
-        }
-
-        .modal-card {
-            background: var(--bg-surface);
-            border-top: 1px solid var(--neon-border);
-            border-radius: 20px 20px 0 0;
-            width: 100%;
-            max-width: 480px;
-            padding: 24px 20px 30px;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
         .form-input {
             width: 100%;
             background: var(--bg-elevated);
@@ -1197,29 +1086,6 @@
             border-color: var(--neon);
         }
 
-        .btn-whatsapp-outline {
-            background: transparent;
-            border: 1px solid #25D366;
-            color: #25D366;
-            border-radius: var(--radius-md);
-            padding: 13px;
-            font-weight: 700;
-            font-size: 12px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: all 0.2s;
-        }
-
-        .btn-whatsapp-outline:hover {
-            background: #25D366;
-            color: #000;
-        }
-
         /* Toast */
         .toast-msg {
             position: fixed;
@@ -1228,7 +1094,7 @@
             transform: translateX(-50%) translateY(-60px);
             background: var(--neon);
             color: #000;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 12px;
             padding: 9px 18px;
             border-radius: var(--radius-full);
@@ -1278,10 +1144,10 @@
                     <span>Canchas & Club Exclusivo</span>
                 </div>
                 <h1 class="hero-title">RESERVA TU <span>CANCHA</span></h1>
-                <p class="hero-desc">Sedes sintéticas verificadas con servicios matchday VIP y armado táctico.</p>
+                <p class="hero-desc">Sedes sintéticas verificadas con servicios matchday VIP.</p>
             </div>
 
-            <!-- Enhanced Calendar Hub (Dual View: Strip vs Full Month Grid) -->
+            <!-- Enhanced Calendar Hub -->
             <div class="calendar-hub">
                 <div class="calendar-header-bar">
                     <span id="calCurrentLabel" style="font-size: 12px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.04em;">MAYO 2026</span>
@@ -1376,7 +1242,7 @@
         </section>
 
 
-        <!-- SCREEN 2: MATCH DETAIL + VIP HUB + TACTICAL SQUADS + SPLIT -->
+        <!-- SCREEN 2: MATCH DETAIL & VIP EXTRAS -->
         <section class="screen" id="detailScreen">
             <div class="detail-banner" id="detailBanner">
                 <div class="detail-banner-tint"></div>
@@ -1394,206 +1260,146 @@
                 </div>
             </div>
 
-            <!-- Sub Nav Tabs -->
-            <nav class="tab-bar-nav">
-                <button class="tab-nav-btn active" onclick="switchDetailTab('tabOverview', this)">
-                    <i data-lucide="info" style="width:13px; height:13px;"></i>
-                    <span>Detalle & Extras</span>
-                </button>
-                <button class="tab-nav-btn" onclick="switchDetailTab('tabTeams', this)">
-                    <i data-lucide="users" style="width:13px; height:13px;"></i>
-                    <span>Equipos 2D</span>
-                </button>
-                <button class="tab-nav-btn" onclick="switchDetailTab('tabSplitPay', this)">
-                    <i data-lucide="credit-card" style="width:13px; height:13px;"></i>
-                    <span>Split Pay</span>
-                </button>
-            </nav>
-
-            <!-- TAB 1: FICHA & EXTRAS VIP -->
-            <div class="tab-content-panel active" id="tabOverview">
-                <div class="px-container" style="padding-top: 16px;">
-                    <div style="background:var(--bg-card); border:1px solid var(--border-hairline); border-radius:var(--radius-md); padding:14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">HORARIO & UBICACIÓN</div>
-                            <div style="font-size:14px; font-weight:700; color:#fff;" id="detSchedule">Hoy • 19:00 - 20:00 (6v6)</div>
-                            <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;" id="detLocation">Av. NQS # 53-80</div>
+            <div class="px-container" style="padding-top: 18px;">
+                
+                <!-- PROMINENT HIGH-IMPACT SHOWCASE CARD -->
+                <div class="match-showcase-card">
+                    <div class="showcase-accent-glow"></div>
+                    
+                    <div class="showcase-time-header">
+                        <div class="showcase-time-icon">
+                            <i data-lucide="clock" style="width:22px; height:22px;"></i>
                         </div>
-                        <div style="text-align:right;">
-                            <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">DISPONIBILIDAD</div>
-                            <div style="font-size:13px; font-weight:800; color:var(--neon);" id="detSpotsCount">4 Libres</div>
+                        <div>
+                            <div class="showcase-time-val" id="detTimeBig">19:00 - 20:00</div>
+                            <div class="showcase-time-sub" id="detDateBadge">HOY • HORARIO CONFIRMADO</div>
                         </div>
                     </div>
 
-                    <!-- EXTRAS VIP HUB -->
-                    <div style="margin-bottom: 20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                            <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
-                                <i data-lucide="sparkles" style="width:13px; height:13px;"></i>
-                                <span>Servicios VIP Matchday</span>
-                            </span>
-                            <span style="font-size:10px; color:var(--neon); font-weight:700;">OPCIONAL</span>
-                        </div>
-
-                        <div class="extras-card-item" data-id="photos" data-price="25000" onclick="toggleExtraItem(this)">
-                            <div class="extras-info-left">
-                                <div class="extras-icon-box">
-                                    <i data-lucide="camera" style="width:18px; height:18px;"></i>
-                                </div>
-                                <div>
-                                    <div class="extras-title">Fotografía Pro 4K</div>
-                                    <div class="extras-desc">Cobertura de tus mejores jugadas en alta resolución</div>
-                                </div>
-                            </div>
-                            <div style="display:flex; align-items:center;">
-                                <span class="extras-price">+$25.000</span>
-                                <div class="check-box-minimal"><i data-lucide="check" style="width:12px; height:12px;"></i></div>
+                    <div class="showcase-details-grid">
+                        <div class="showcase-item">
+                            <i data-lucide="map-pin" class="showcase-item-icon" style="width:16px; height:16px;"></i>
+                            <div>
+                                <div class="showcase-item-label">Ubicación</div>
+                                <div class="showcase-item-text" id="detLocationBig">Av. NQS # 53-80</div>
                             </div>
                         </div>
 
-                        <div class="extras-card-item" data-id="referee" data-price="35000" onclick="toggleExtraItem(this)">
-                            <div class="extras-info-left">
-                                <div class="extras-icon-box">
-                                    <i data-lucide="award" style="width:18px; height:18px;"></i>
-                                </div>
-                                <div>
-                                    <div class="extras-title">Árbitro Oficial Federado</div>
-                                    <div class="extras-desc">Juez colegiado con tarjetas y planillero</div>
-                                </div>
-                            </div>
-                            <div style="display:flex; align-items:center;">
-                                <span class="extras-price">+$35.000</span>
-                                <div class="check-box-minimal"><i data-lucide="check" style="width:12px; height:12px;"></i></div>
+                        <div class="showcase-item">
+                            <i data-lucide="users" class="showcase-item-icon" style="width:16px; height:16px;"></i>
+                            <div>
+                                <div class="showcase-item-label">Formato</div>
+                                <div class="showcase-item-text" id="detFormatBig">Fútbol 6 (6v6)</div>
                             </div>
                         </div>
 
-                        <div class="extras-card-item" data-id="gatorade" data-price="20000" onclick="toggleExtraItem(this)">
-                            <div class="extras-info-left">
-                                <div class="extras-icon-box">
-                                    <i data-lucide="zap" style="width:18px; height:18px;"></i>
-                                </div>
-                                <div>
-                                    <div class="extras-title">Hielera + 6 Bebidas Isotónicas</div>
-                                    <div class="extras-desc">Entregados en el banco al inicio del partido</div>
-                                </div>
-                            </div>
-                            <div style="display:flex; align-items:center;">
-                                <span class="extras-price">+$20.000</span>
-                                <div class="check-box-minimal"><i data-lucide="check" style="width:12px; height:12px;"></i></div>
+                        <div class="showcase-item">
+                            <i data-lucide="shield" class="showcase-item-icon" style="width:16px; height:16px;"></i>
+                            <div>
+                                <div class="showcase-item-label">Superficie</div>
+                                <div class="showcase-item-text" id="detSurfaceBig">Sintética Techada</div>
                             </div>
                         </div>
 
-                        <div class="extras-card-item" data-id="beers" data-price="45000" onclick="toggleExtraItem(this)">
-                            <div class="extras-info-left">
-                                <div class="extras-icon-box">
-                                    <i data-lucide="coffee" style="width:18px; height:18px;"></i>
-                                </div>
-                                <div>
-                                    <div class="extras-title">Tercer Tiempo: Balde + Mesa VIP</div>
-                                    <div class="extras-desc">Mesa reservada con 10 cervezas frías listas al final</div>
-                                </div>
-                            </div>
-                            <div style="display:flex; align-items:center;">
-                                <span class="extras-price">+$45.000</span>
-                                <div class="check-box-minimal"><i data-lucide="check" style="width:12px; height:12px;"></i></div>
+                        <div class="showcase-item">
+                            <i data-lucide="check-circle-2" class="showcase-item-icon" style="width:16px; height:16px; color:var(--neon);"></i>
+                            <div>
+                                <div class="showcase-item-label">Disponibilidad</div>
+                                <div class="showcase-item-text" style="color:var(--neon);" id="detSpotsBig">4 Cupos Libres</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- TAB 2: ARMADOR TÁCTICO 2D -->
-            <div class="tab-content-panel" id="tabTeams">
-                <div class="px-container" style="padding-top: 16px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <!-- VIP EXTRAS SECTION -->
+                <div style="margin-top: 10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                        <span style="font-size:12px; font-weight:800; text-transform:uppercase; color:#fff; display:flex; align-items:center; gap:6px; letter-spacing:0.04em;">
+                            <i data-lucide="sparkles" style="width:15px; height:15px; color:var(--neon);"></i>
+                            <span>Servicios VIP Matchday</span>
+                        </span>
+                        <span style="font-size:10px; color:var(--text-muted); font-weight:700;">PERSONALIZA TU PARTIDO</span>
+                    </div>
+
+                    <div class="extras-card-item" data-id="photos" data-price="25000" onclick="toggleExtraItem(this)">
+                        <div class="extras-info-left">
+                            <div class="extras-icon-box">
+                                <i data-lucide="camera" style="width:20px; height:20px;"></i>
+                            </div>
+                            <div>
+                                <div class="extras-title">Fotografía Pro 4K</div>
+                                <div class="extras-desc">Cobertura de tus mejores jugadas en alta resolución</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center;">
+                            <span class="extras-price">+$25.000</span>
+                            <div class="check-box-minimal"><i data-lucide="check" style="width:13px; height:13px;"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="extras-card-item" data-id="referee" data-price="35000" onclick="toggleExtraItem(this)">
+                        <div class="extras-info-left">
+                            <div class="extras-icon-box">
+                                <i data-lucide="award" style="width:20px; height:20px;"></i>
+                            </div>
+                            <div>
+                                <div class="extras-title">Árbitro Oficial Federado</div>
+                                <div class="extras-desc">Juez colegiado con tarjetas, silbato y planillero</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center;">
+                            <span class="extras-price">+$35.000</span>
+                            <div class="check-box-minimal"><i data-lucide="check" style="width:13px; height:13px;"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="extras-card-item" data-id="gatorade" data-price="20000" onclick="toggleExtraItem(this)">
+                        <div class="extras-info-left">
+                            <div class="extras-icon-box">
+                                <i data-lucide="zap" style="width:20px; height:20px;"></i>
+                            </div>
+                            <div>
+                                <div class="extras-title">Hielera + 6 Bebidas Isotónicas</div>
+                                <div class="extras-desc">Entregados en el banco al inicio del partido</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center;">
+                            <span class="extras-price">+$20.000</span>
+                            <div class="check-box-minimal"><i data-lucide="check" style="width:13px; height:13px;"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="extras-card-item" data-id="beers" data-price="45000" onclick="toggleExtraItem(this)">
+                        <div class="extras-info-left">
+                            <div class="extras-icon-box">
+                                <i data-lucide="coffee" style="width:20px; height:20px;"></i>
+                            </div>
+                            <div>
+                                <div class="extras-title">Tercer Tiempo: Balde + Mesa VIP</div>
+                                <div class="extras-desc">Mesa reservada con 10 cervezas frías listas al final</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center;">
+                            <span class="extras-price">+$45.000</span>
+                            <div class="check-box-minimal"><i data-lucide="check" style="width:13px; height:13px;"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NATURALLY EMBEDDED ACTION BUTTON (AT THE END OF EXTRAS) -->
+                <div class="embedded-cta-container">
+                    <button class="btn-main-action" onclick="goToScreen('checkoutScreen')">
                         <div>
-                            <h3 style="font-size:14px; font-weight:800; text-transform:uppercase;">Alineación Táctica</h3>
-                            <p style="font-size:11px; color:var(--text-secondary);">Balance de posiciones en cancha</p>
+                            <div style="font-size: 10px; opacity: 0.75; font-weight:700;">TOTAL RESERVA + EXTRAS</div>
+                            <div id="ctaGrandTotalVal" style="font-size: 18px; font-weight:900;">$120.000</div>
                         </div>
-                        <button onclick="autoBalanceTeams()" style="background:var(--neon); color:#000; border:none; padding:7px 12px; border-radius:var(--radius-sm); font-weight:800; font-size:11px; cursor:pointer; display:flex; align-items:center; gap:5px;">
-                            <i data-lucide="refresh-cw" style="width:12px; height:12px;"></i>
-                            <span>Auto Balance</span>
-                        </button>
-                    </div>
-
-                    <div class="tactical-pitch-box">
-                        <div class="field-midline"></div>
-                        <div class="field-circle"></div>
-
-                        <div class="squad-columns">
-                            <!-- Team 1 -->
-                            <div class="team-column neon-team">
-                                <div class="team-column-title">
-                                    <span style="color:var(--neon);">EQUIPO NEÓN</span>
-                                    <span id="neonCountBadge" style="font-size:10px; color:var(--text-muted);">4 Jug.</span>
-                                </div>
-                                <div id="neonTeamList"></div>
-                            </div>
-
-                            <!-- Team 2 -->
-                            <div class="team-column blue-team">
-                                <div class="team-column-title">
-                                    <span style="color:#38bdf8;">EQUIPO AZUL</span>
-                                    <span id="blueCountBadge" style="font-size:10px; color:var(--text-muted);">4 Jug.</span>
-                                </div>
-                                <div id="blueTeamList"></div>
-                            </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span>Continuar al Pago</span>
+                            <i data-lucide="arrow-right" style="width:18px; height:18px;"></i>
                         </div>
-                    </div>
-
-                    <button onclick="openJoinMatchModal()" style="background:var(--bg-card); border:1px solid var(--neon-border); color:var(--neon); padding:12px; border-radius:var(--radius-md); font-weight:700; font-size:12px; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
-                        <i data-lucide="user-plus" style="width:14px; height:14px;"></i>
-                        <span>Inscribirme con mi Posición</span>
                     </button>
                 </div>
-            </div>
 
-            <!-- TAB 3: SPLIT PAYMENT -->
-            <div class="tab-content-panel" id="tabSplitPay">
-                <div class="px-container" style="padding-top: 16px;">
-                    <div class="split-box-card">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                            <div>
-                                <h3 style="font-size:14px; font-weight:800; text-transform:uppercase;">División de Pago</h3>
-                                <p style="font-size:11px; color:var(--text-secondary);">Cada jugador paga su cuota exacta</p>
-                            </div>
-                            <div style="text-align:right;">
-                                <div style="font-size:10px; color:var(--text-muted); text-transform:uppercase;">CUOTA / PERSONA</div>
-                                <div id="splitSingleQuote" style="font-size:15px; font-weight:800; color:var(--neon);">$12.000 COP</div>
-                            </div>
-                        </div>
-
-                        <div id="playerPaymentRows"></div>
-                    </div>
-
-                    <div style="background:var(--bg-card); border:1px solid var(--border-hairline); border-radius:var(--radius-md); padding:14px; margin-bottom:12px;">
-                        <h4 style="font-size:12px; font-weight:700; margin-bottom:4px; color:#fff;">Pagar mi cuota individual</h4>
-                        <p style="font-size:11px; color:var(--text-secondary); margin-bottom:12px;">Transfiere directo y valida tu cupo al instante.</p>
-                        
-                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-                            <button onclick="simulatePlayerSelfPay('Nequi')" style="background:#2b0928; border:1px solid #ff007f; color:#fff; padding:10px; border-radius:var(--radius-sm); font-weight:700; font-size:11px; cursor:pointer;">
-                                Nequi Directo
-                            </button>
-                            <button onclick="simulatePlayerSelfPay('Daviplata')" style="background:#8b1a1c; border:none; color:#fff; padding:10px; border-radius:var(--radius-sm); font-weight:700; font-size:11px; cursor:pointer;">
-                                Daviplata
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Floating CTA Bar -->
-            <div class="floating-action-bar">
-                <button class="btn-main-action" onclick="goToScreen('checkoutScreen')">
-                    <div>
-                        <div style="font-size: 10px; opacity: 0.7; font-weight:600;">TOTAL RESERVA + EXTRAS</div>
-                        <div id="ctaGrandTotalVal" style="font-size: 17px; font-weight:800;">$120.000</div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <span>Continuar</span>
-                        <i data-lucide="arrow-right" style="width:16px; height:16px;"></i>
-                    </div>
-                </button>
             </div>
         </section>
 
@@ -1626,13 +1432,6 @@
                         <div>
                             <div style="font-weight:700; font-size:13px;">Pagar Reserva Completa</div>
                             <div style="font-size:11px; color:var(--text-secondary);">Nequi / PSE / Tarjeta</div>
-                        </div>
-                    </label>
-                    <label style="background:var(--bg-card); border:1px solid var(--border-hairline); border-radius:var(--radius-sm); padding:12px 14px; display:flex; align-items:center; gap:12px; cursor:pointer;">
-                        <input type="radio" name="paymethod" style="accent-color:var(--neon);">
-                        <div>
-                            <div style="font-weight:700; font-size:13px;">Solo Pagar Mi Cuota</div>
-                            <div style="font-size:11px; color:var(--text-secondary);">Comparte el enlace de pago con el equipo</div>
                         </div>
                     </label>
                 </div>
@@ -1730,40 +1529,6 @@
 
 </div>
 
-<!-- MODAL: UNIRME AL PARTIDO -->
-<div class="modal-overlay" id="joinMatchModal">
-    <div class="modal-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-            <h3 style="font-size:15px; font-weight:800; text-transform:uppercase;">Inscripción a Partido</h3>
-            <button onclick="closeJoinMatchModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">
-                <i data-lucide="x" style="width:18px; height:18px;"></i>
-            </button>
-        </div>
-
-        <label style="font-size:11px; color:var(--text-muted); font-weight:700;">NOMBRE DEL JUGADOR</label>
-        <input type="text" id="joinPlayerName" class="form-input" value="Camilo Torres">
-
-        <label style="font-size:11px; color:var(--text-muted); font-weight:700; margin-top:10px; display:block;">POSICIÓN EN CAMPO</label>
-        <select id="joinPlayerPos" class="form-input">
-            <option value="Delantero">Delantero</option>
-            <option value="Volante">Volante / 10</option>
-            <option value="Defensa">Defensa</option>
-            <option value="Arquero">Portero</option>
-        </select>
-
-        <label style="font-size:11px; color:var(--text-muted); font-weight:700; margin-top:10px; display:block;">EQUIPO</label>
-        <select id="joinPlayerTeam" class="form-input">
-            <option value="neon">Equipo Neón</option>
-            <option value="blue">Equipo Azul</option>
-            <option value="auto">Asignación Automática</option>
-        </select>
-
-        <button onclick="confirmJoinPlayer()" style="background:var(--neon); color:#000; border:none; padding:14px; border-radius:var(--radius-sm); font-weight:800; font-size:12px; width:100%; margin-top:16px; cursor:pointer; text-transform:uppercase; letter-spacing:0.04em;">
-            Confirmar Cupo
-        </button>
-    </div>
-</div>
-
 <script>
     // Initial Seed Database
     const initialMatchesSeed = [
@@ -1779,17 +1544,7 @@
             spots: 4,
             totalSpots: 12,
             location: 'Av. NQS # 53-80, Teusaquillo',
-            img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=700',
-            players: [
-                { name: 'Juan M. (C)', pos: 'Delantero', team: 'neon', paid: true, method: 'Nequi' },
-                { name: 'Mateo R.', pos: 'Volante', team: 'neon', paid: false },
-                { name: 'David P.', pos: 'Defensa', team: 'neon', paid: true, method: 'Daviplata' },
-                { name: 'Andrés G.', pos: 'Arquero', team: 'neon', paid: false },
-                { name: 'Felipe S.', pos: 'Delantero', team: 'blue', paid: true, method: 'Nequi' },
-                { name: 'Sebas L.', pos: 'Volante', team: 'blue', paid: false },
-                { name: 'Nicolás K.', pos: 'Defensa', team: 'blue', paid: false },
-                { name: 'Carlos V.', pos: 'Arquero', team: 'blue', paid: true, method: 'PSE' }
-            ]
+            img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=700'
         },
         {
             id: 'm2',
@@ -1803,11 +1558,7 @@
             spots: 6,
             totalSpots: 16,
             location: 'Autopista Norte con Calle 170',
-            img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700',
-            players: [
-                { name: 'Santiago R.', pos: 'Delantero', team: 'neon', paid: true },
-                { name: 'Lucas T.', pos: 'Defensa', team: 'blue', paid: true }
-            ]
+            img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700'
         },
         {
             id: 'm3',
@@ -1821,8 +1572,7 @@
             spots: 3,
             totalSpots: 10,
             location: 'Autopista Sur # 45-20',
-            img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=700',
-            players: []
+            img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=700'
         },
         {
             id: 'm4',
@@ -1836,8 +1586,7 @@
             spots: 2,
             totalSpots: 10,
             location: 'Carrera 7 # 58-30',
-            img: 'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=700',
-            players: []
+            img: 'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=700'
         },
         {
             id: 'm5',
@@ -1851,8 +1600,7 @@
             spots: 10,
             totalSpots: 22,
             location: 'Av. Suba # 128-40',
-            img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700',
-            players: []
+            img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700'
         },
         {
             id: 'm6',
@@ -1866,8 +1614,7 @@
             spots: 5,
             totalSpots: 12,
             location: 'Av. Calle 80 # 72-10',
-            img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700',
-            players: []
+            img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700'
         },
         {
             id: 'm7',
@@ -1881,8 +1628,7 @@
             spots: 8,
             totalSpots: 16,
             location: 'Calle 63 # 68-45',
-            img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=700',
-            players: []
+            img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=700'
         }
     ];
 
@@ -1908,19 +1654,19 @@
 
     // State
     let matchesList = getStoredMatches();
-    let selectedDayIndex = 0; // offset in days from today
+    let selectedDayIndex = 0;
     let selectedZone = 'all';
     let selectedFormat = 'all';
     let selectedSurface = 'all';
     let activeMatch = null;
     let activeExtras = new Map();
-    let calendarMode = 'strip'; // 'strip' or 'month'
-    let viewMonthDate = new Date(); // for month grid browsing
+    let calendarMode = 'strip';
+    let viewMonthDate = new Date();
 
     const dayNamesShort = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
     const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-    // 1. Calendar View Switcher (Strip vs Month Grid)
+    // 1. Calendar View Switcher
     function setCalendarView(mode) {
         calendarMode = mode;
         const btnStrip = document.getElementById('btnViewStrip');
@@ -1943,7 +1689,6 @@
         lucide.createIcons();
     }
 
-    // Render 14-day horizontal strip
     function renderCalendarStrip() {
         const slider = document.getElementById('calendarSlider');
         slider.innerHTML = '';
@@ -1973,7 +1718,6 @@
         }
     }
 
-    // Render Full Month Calendar Grid
     function renderMonthGrid() {
         const grid = document.getElementById('monthDaysGrid');
         grid.innerHTML = '';
@@ -1985,7 +1729,6 @@
         const firstDayOfMonth = new Date(year, month, 1);
         const lastDayOfMonth = new Date(year, month + 1, 0);
         
-        // Monday based index (0 = Monday, 6 = Sunday)
         let firstDayIndex = firstDayOfMonth.getDay() - 1;
         if (firstDayIndex === -1) firstDayIndex = 6;
 
@@ -1993,14 +1736,12 @@
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        // Blank days before month starts
         for (let x = 0; x < firstDayIndex; x++) {
             const emptyCell = document.createElement('div');
             emptyCell.className = 'day-cell empty';
             grid.appendChild(emptyCell);
         }
 
-        // Real Days of month
         for (let day = 1; day <= totalDays; day++) {
             const currentCellDate = new Date(year, month, day);
             currentCellDate.setHours(0, 0, 0, 0);
@@ -2138,7 +1879,7 @@
         renderMatches();
     }
 
-    // 3. Open Detail
+    // 3. Open Detail Screen
     function openMatchDetail(id) {
         activeMatch = matchesList.find(x => x.id === id);
         if (!activeMatch) return;
@@ -2146,107 +1887,19 @@
         document.querySelectorAll('.extras-card-item').forEach(c => c.classList.remove('selected'));
 
         document.getElementById('detTitle').innerText = activeMatch.name;
-        document.getElementById('detCategory').innerText = `SEDE PREMIUM • ${activeMatch.zone.toUpperCase()} (${activeMatch.surface})`;
-        document.getElementById('detSchedule').innerText = `${activeMatch.time} (${activeMatch.format})`;
-        document.getElementById('detLocation').innerText = activeMatch.location;
-        document.getElementById('detSpotsCount').innerText = `${activeMatch.spots} Libres`;
+        document.getElementById('detCategory').innerText = `SEDE PREMIUM • ${activeMatch.zone.toUpperCase()}`;
         document.getElementById('detailBanner').style.backgroundImage = `url(${activeMatch.img})`;
 
-        renderTacticalTeams();
-        renderSplitPaymentTab();
+        // Populate High-Impact Showcase Card
+        document.getElementById('detTimeBig').innerText = activeMatch.time;
+        document.getElementById('detDateBadge').innerText = `${selectedDayIndex === 0 ? 'HOY' : 'DÍA SELECCIONADO'} • HORARIO CONFIRMADO`;
+        document.getElementById('detLocationBig').innerText = `${activeMatch.zone} • ${activeMatch.location}`;
+        document.getElementById('detFormatBig').innerText = `Fútbol ${activeMatch.format.replace('v', ' vs ')}`;
+        document.getElementById('detSurfaceBig').innerText = `Grama ${activeMatch.surface}`;
+        document.getElementById('detSpotsBig').innerText = `${activeMatch.spots} Cupos Libres (${activeMatch.totalSpots} Total)`;
+
         updatePriceSummary();
         goToScreen('detailScreen');
-    }
-
-    function switchDetailTab(tabId, btn) {
-        document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelectorAll('.tab-content-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-        lucide.createIcons();
-    }
-
-    // 4. Tactical Teams
-    function renderTacticalTeams() {
-        if (!activeMatch) return;
-        const neonList = document.getElementById('neonTeamList');
-        const blueList = document.getElementById('blueTeamList');
-        const players = activeMatch.players || [];
-
-        const neon = players.filter(p => p.team === 'neon');
-        const blue = players.filter(p => p.team === 'blue');
-
-        document.getElementById('neonCountBadge').innerText = `${neon.length} Jug.`;
-        document.getElementById('blueCountBadge').innerText = `${blue.length} Jug.`;
-
-        neonList.innerHTML = neon.length ? neon.map(p => `
-            <div class="player-row">
-                <span class="pos-badge">${p.pos}</span>
-                <span style="font-weight:600; color:#fff;">${p.name}</span>
-            </div>
-        `).join('') : '<p style="color:var(--text-muted); font-size:10px; padding:8px 0;">Sin jugadores</p>';
-
-        blueList.innerHTML = blue.length ? blue.map(p => `
-            <div class="player-row">
-                <span class="pos-badge" style="color:#38bdf8;">${p.pos}</span>
-                <span style="font-weight:600; color:#fff;">${p.name}</span>
-            </div>
-        `).join('') : '<p style="color:var(--text-muted); font-size:10px; padding:8px 0;">Sin jugadores</p>';
-    }
-
-    function autoBalanceTeams() {
-        if (!activeMatch || !activeMatch.players.length) return;
-        activeMatch.players.forEach((p, index) => {
-            p.team = index % 2 === 0 ? 'neon' : 'blue';
-        });
-        setStoredMatches(matchesList);
-        renderTacticalTeams();
-        showToast('Alineaciones balanceadas');
-    }
-
-    // 5. Split Pay
-    function renderSplitPaymentTab() {
-        if (!activeMatch) return;
-        const container = document.getElementById('playerPaymentRows');
-        const players = activeMatch.players || [];
-        const singleQuote = Math.round(activeMatch.price / (activeMatch.totalSpots || 10));
-
-        document.getElementById('splitSingleQuote').innerText = `$${singleQuote.toLocaleString('es-CO')} COP`;
-
-        if (!players.length) {
-            container.innerHTML = '<p style="font-size:11px; color:var(--text-muted); padding:8px 0;">Sin jugadores inscritos aún.</p>';
-            return;
-        }
-
-        container.innerHTML = players.map(p => `
-            <div class="split-row-item">
-                <div>
-                    <div style="font-weight:700; font-size:13px; color:#fff;">${p.name}</div>
-                    <div style="font-size:10px; color:var(--text-secondary);">${p.pos} • Equipo ${p.team === 'neon' ? 'Neón' : 'Azul'}</div>
-                </div>
-                <div class="${p.paid ? 'status-pill-ok' : 'status-pill-wait'}">
-                    ${p.paid ? `Pagado (${p.method || 'Nequi'})` : 'Pendiente'}
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function simulatePlayerSelfPay(method) {
-        if (!activeMatch) return;
-        const profileName = localStorage.getItem('ft_prof_name') || 'Camilo Torres';
-        let found = activeMatch.players.find(p => p.name === profileName);
-        if (!found) {
-            found = { name: profileName, pos: 'Delantero', team: 'neon', paid: true, method: method };
-            activeMatch.players.push(found);
-            activeMatch.spots = Math.max(0, activeMatch.spots - 1);
-        } else {
-            found.paid = true;
-            found.method = method;
-        }
-        setStoredMatches(matchesList);
-        renderTacticalTeams();
-        renderSplitPaymentTab();
-        showToast(`Pago procesado con ${method}`);
     }
 
     function toggleExtraItem(card) {
@@ -2267,32 +1920,6 @@
         let sum = activeMatch.price;
         activeExtras.forEach(p => sum += p);
         document.getElementById('ctaGrandTotalVal').innerText = `$${sum.toLocaleString('es-CO')}`;
-    }
-
-    // Modal Inscribirme
-    function openJoinMatchModal() {
-        document.getElementById('joinMatchModal').classList.add('open');
-    }
-    function closeJoinMatchModal() {
-        document.getElementById('joinMatchModal').classList.remove('open');
-    }
-
-    function confirmJoinPlayer() {
-        if (!activeMatch) return;
-        const name = document.getElementById('joinPlayerName').value || 'Jugador';
-        const pos = document.getElementById('joinPlayerPos').value;
-        let team = document.getElementById('joinPlayerTeam').value;
-        if (team === 'auto') team = (activeMatch.players.length % 2 === 0) ? 'neon' : 'blue';
-
-        activeMatch.players.push({ name, pos, team, paid: false });
-        activeMatch.spots = Math.max(0, activeMatch.spots - 1);
-        setStoredMatches(matchesList);
-
-        closeJoinMatchModal();
-        renderTacticalTeams();
-        renderSplitPaymentTab();
-        renderMatches();
-        showToast(`${name} inscrito al partido`);
     }
 
     function confirmFullBooking() {
@@ -2404,13 +2031,12 @@
 
     function shareMatchWhatsApp() {
         if (!activeMatch) return;
-        const quote = Math.round(activeMatch.price / (activeMatch.totalSpots || 10));
-        const text = `*FÚTBOL TOTAL • CONVOCATORIA*%0A%0A` +
+        const text = `*FÚTBOL TOTAL • RESERVA MATCHDAY*%0A%0A` +
                      `*Sede:* ${activeMatch.name}%0A` +
                      `*Horario:* ${activeMatch.time} (${activeMatch.format})%0A` +
                      `*Zona:* ${activeMatch.zone} • ${activeMatch.location}%0A` +
-                     `*Cuota:* $${quote.toLocaleString('es-CO')} COP por persona%0A%0A` +
-                     `*Confirma tu asistencia aquí:* https://jcamacho1720-bit.github.io/FutbolTotal/`;
+                     `*Total:* $${activeMatch.price.toLocaleString('es-CO')} COP%0A%0A` +
+                     `*Ver cancha y extras:* https://jcamacho1720-bit.github.io/FutbolTotal/`;
         window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
         showToast('Enlace de WhatsApp listo');
     }
