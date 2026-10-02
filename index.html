@@ -141,11 +141,19 @@
             gap: 6px;
             font-size: 11px;
             font-weight: 700;
-            color: var(--text-secondary);
+            color: var(--text-primary);
             background: var(--bg-elevated);
             border: 1px solid var(--border-hairline);
-            padding: 5px 11px;
+            padding: 6px 12px;
             border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .header-status-badge:hover {
+            border-color: var(--neon);
+            background: var(--bg-card-hover);
         }
 
         .status-dot-active {
@@ -218,7 +226,7 @@
             line-height: 1.45;
         }
 
-        /* Enhanced Calendar Hub (Dual View: Strip vs Full Month Grid) */
+        /* Enhanced Calendar Hub */
         .calendar-hub {
             margin: 14px 0 16px;
         }
@@ -998,7 +1006,7 @@
             color: #000;
         }
 
-        /* Naturally embedded End-of-Page CTA Button */
+        /* Embedded CTA Container */
         .embedded-cta-container {
             margin-top: 24px;
             margin-bottom: 20px;
@@ -1026,6 +1034,78 @@
         .btn-main-action:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 30px rgba(212, 255, 0, 0.35);
+        }
+
+        /* City Selector Modal */
+        .city-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 300;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .city-modal-overlay.open {
+            display: flex;
+        }
+
+        .city-modal-sheet {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--neon-border);
+            border-radius: 20px 20px 0 0;
+            width: 100%;
+            max-width: 480px;
+            padding: 24px 20px 32px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .city-option-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.15s ease;
+        }
+
+        .city-option-item:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-card-hover);
+        }
+
+        .city-option-item.selected {
+            background: var(--neon-subtle);
+            border-color: var(--neon);
+        }
+
+        .city-name-text {
+            font-size: 14px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .city-dept-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .city-badge-count {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--neon);
+            background: var(--bg-elevated);
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-hairline);
         }
 
         /* Bottom Tab Navigation */
@@ -1127,9 +1207,12 @@
             <div class="brand-logo-mark">F</div>
             <div class="brand-name">FÚTBOL<span>TOTAL</span></div>
         </div>
-        <div class="header-status-badge">
+        
+        <!-- Interactive City Selector Badge -->
+        <div class="header-status-badge" onclick="openCityModal()">
             <span class="status-dot-active"></span>
-            <span>BOGOTÁ</span>
+            <span id="headerCityLabel">BOGOTÁ</span>
+            <i data-lucide="chevron-down" style="width:12px; height:12px; color:var(--text-secondary); margin-left:2px;"></i>
         </div>
     </header>
 
@@ -1141,7 +1224,7 @@
             <div class="hero">
                 <div class="eyebrow">
                     <i data-lucide="shield-check" style="width:13px; height:13px;"></i>
-                    <span>Canchas & Club Exclusivo</span>
+                    <span id="heroCityTag">Canchas & Club • Bogotá</span>
                 </div>
                 <h1 class="hero-title">RESERVA TU <span>CANCHA</span></h1>
                 <p class="hero-desc">Sedes sintéticas verificadas con servicios matchday VIP.</p>
@@ -1195,15 +1278,7 @@
                 </div>
 
                 <div class="filter-group-header">Zona geográfica</div>
-                <div class="chips-track" id="zoneFilterList">
-                    <button class="filter-pill active" onclick="setZoneFilter('all', this)">Todas</button>
-                    <button class="filter-pill" onclick="setZoneFilter('Norte', this)">Norte</button>
-                    <button class="filter-pill" onclick="setZoneFilter('Sur', this)">Sur</button>
-                    <button class="filter-pill" onclick="setZoneFilter('Salitre', this)">Salitre</button>
-                    <button class="filter-pill" onclick="setZoneFilter('Chapinero', this)">Chapinero</button>
-                    <button class="filter-pill" onclick="setZoneFilter('Calle 80', this)">Calle 80</button>
-                    <button class="filter-pill" onclick="setZoneFilter('Suba', this)">Suba</button>
-                </div>
+                <div class="chips-track" id="zoneFilterList"></div>
 
                 <div class="filter-group-header">Formato</div>
                 <div class="chips-track" id="formatFilterList">
@@ -1529,11 +1604,40 @@
 
 </div>
 
+<!-- MODAL: SELECTOR DE CIUDAD -->
+<div class="city-modal-overlay" id="cityModal">
+    <div class="city-modal-sheet">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <div>
+                <h3 style="font-size:16px; font-weight:900; color:#fff; text-transform:uppercase; letter-spacing:0.02em;">Selecciona tu Ciudad</h3>
+                <p style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Canchas y partidos disponibles en Colombia</p>
+            </div>
+            <button onclick="closeCityModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">
+                <i data-lucide="x" style="width:18px; height:18px;"></i>
+            </button>
+        </div>
+
+        <div id="cityListContainer"></div>
+    </div>
+</div>
+
 <script>
-    // Initial Seed Database
+    // Supported Colombian Cities Config
+    const citiesData = [
+        { id: 'bogota', name: 'Bogotá, D.C.', shortName: 'BOGOTÁ', dept: 'Cundinamarca', venuesCount: 28, zones: ['Todas', 'Norte', 'Sur', 'Salitre', 'Chapinero', 'Calle 80', 'Suba'] },
+        { id: 'medellin', name: 'Medellín', shortName: 'MEDELLÍN', dept: 'Antioquia', venuesCount: 19, zones: ['Todas', 'El Poblado', 'Laureles', 'Envigado', 'Belén', 'Rionegro'] },
+        { id: 'cali', name: 'Cali', shortName: 'CALI', dept: 'Valle del Cauca', venuesCount: 14, zones: ['Todas', 'Ciudad Jardín', 'Granada', 'Pance', 'San Fernando'] },
+        { id: 'barranquilla', name: 'Barranquilla', shortName: 'BARRANQUILLA', dept: 'Atlántico', venuesCount: 11, zones: ['Todas', 'Alto Prado', 'Riomar', 'Villa Campestre', 'El Prado'] },
+        { id: 'bucaramanga', name: 'Bucaramanga', shortName: 'BUCARAMANGA', dept: 'Santander', venuesCount: 9, zones: ['Todas', 'Cabecera', 'Cañaveral', 'Ruitoque', 'Provenza'] },
+        { id: 'cartagena', name: 'Cartagena', shortName: 'CARTAGENA', dept: 'Bolívar', venuesCount: 7, zones: ['Todas', 'Bocagrande', 'Manga', 'Zona Norte', 'Castillogrande'] }
+    ];
+
+    // Master Match Database (Multi-City)
     const initialMatchesSeed = [
+        // BOGOTÁ
         {
             id: 'm1',
+            cityId: 'bogota',
             dayOffset: 0,
             name: 'Canchas El Campín 5',
             zone: 'Salitre',
@@ -1548,6 +1652,7 @@
         },
         {
             id: 'm2',
+            cityId: 'bogota',
             dayOffset: 0,
             name: 'Sede Norte Elite 170',
             zone: 'Norte',
@@ -1562,6 +1667,7 @@
         },
         {
             id: 'm3',
+            cityId: 'bogota',
             dayOffset: 0,
             name: 'Sur Arena Venecia',
             zone: 'Sur',
@@ -1576,6 +1682,7 @@
         },
         {
             id: 'm4',
+            cityId: 'bogota',
             dayOffset: 1,
             name: 'Chapinero Sky Turf',
             zone: 'Chapinero',
@@ -1590,6 +1697,7 @@
         },
         {
             id: 'm5',
+            cityId: 'bogota',
             dayOffset: 2,
             name: 'Suba Imperial Stadium',
             zone: 'Suba',
@@ -1602,43 +1710,139 @@
             location: 'Av. Suba # 128-40',
             img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700'
         },
+        // MEDELLÍN
         {
-            id: 'm6',
-            dayOffset: 4,
-            name: 'Calle 80 Pro Arena',
-            zone: 'Calle 80',
+            id: 'm_med1',
+            cityId: 'medellin',
+            dayOffset: 0,
+            name: 'Poblado Premium Arena',
+            zone: 'El Poblado',
             format: '6v6',
             surface: 'Techada',
-            price: 130000,
+            price: 140000,
             time: '19:30 - 20:30',
             spots: 5,
             totalSpots: 12,
-            location: 'Av. Calle 80 # 72-10',
+            location: 'Carrera 43A # 1 Sur-150',
+            img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=700'
+        },
+        {
+            id: 'm_med2',
+            cityId: 'medellin',
+            dayOffset: 0,
+            name: 'Laureles Fútbol Club',
+            zone: 'Laureles',
+            format: '5v5',
+            surface: 'Abierta',
+            price: 105000,
+            time: '20:00 - 21:00',
+            spots: 3,
+            totalSpots: 10,
+            location: 'Av. Nutibara # 74-22',
+            img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700'
+        },
+        {
+            id: 'm_med3',
+            cityId: 'medellin',
+            dayOffset: 1,
+            name: 'Envigado Sports Complex',
+            zone: 'Envigado',
+            format: '8v8',
+            surface: 'Techada',
+            price: 170000,
+            time: '21:00 - 22:00',
+            spots: 8,
+            totalSpots: 16,
+            location: 'Calle 37 Sur # 42-10',
+            img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=700'
+        },
+        // CALI
+        {
+            id: 'm_cali1',
+            cityId: 'cali',
+            dayOffset: 0,
+            name: 'Ciudad Jardín Soccer Park',
+            zone: 'Ciudad Jardín',
+            format: '6v6',
+            surface: 'Abierta',
+            price: 115000,
+            time: '19:00 - 20:00',
+            spots: 4,
+            totalSpots: 12,
+            location: 'Calle 16 # 105-30',
             img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700'
         },
         {
-            id: 'm7',
-            dayOffset: 7,
-            name: 'Salitre Champions Park',
-            zone: 'Salitre',
-            format: '8v8',
+            id: 'm_cali2',
+            cityId: 'cali',
+            dayOffset: 0,
+            name: 'Granada Champions Club',
+            zone: 'Granada',
+            format: '5v5',
+            surface: 'Techada',
+            price: 95000,
+            time: '20:30 - 21:30',
+            spots: 2,
+            totalSpots: 10,
+            location: 'Av. 9N # 14-40',
+            img: 'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=700'
+        },
+        // BARRANQUILLA
+        {
+            id: 'm_baq1',
+            cityId: 'barranquilla',
+            dayOffset: 0,
+            name: 'Riomar Elite Arena',
+            zone: 'Riomar',
+            format: '6v6',
+            surface: 'Techada',
+            price: 130000,
+            time: '19:00 - 20:00',
+            spots: 4,
+            totalSpots: 12,
+            location: 'Carrera 53 # 85-60',
+            img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=700'
+        },
+        // BUCARAMANGA
+        {
+            id: 'm_bga1',
+            cityId: 'bucaramanga',
+            dayOffset: 0,
+            name: 'Cabecera Turf Club',
+            zone: 'Cabecera',
+            format: '6v6',
             surface: 'Abierta',
-            price: 190000,
-            time: '20:00 - 21:00',
-            spots: 8,
-            totalSpots: 16,
-            location: 'Calle 63 # 68-45',
+            price: 100000,
+            time: '19:30 - 20:30',
+            spots: 3,
+            totalSpots: 12,
+            location: 'Carrera 35 # 48-20',
             img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=700'
+        },
+        // CARTAGENA
+        {
+            id: 'm_ctg1',
+            cityId: 'cartagena',
+            dayOffset: 0,
+            name: 'Bocagrande Caribe Arena',
+            zone: 'Bocagrande',
+            format: '5v5',
+            surface: 'Techada',
+            price: 125000,
+            time: '20:00 - 21:00',
+            spots: 2,
+            totalSpots: 10,
+            location: 'Av. San Martín # 8-40',
+            img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700'
         }
     ];
 
-    function getStoredMatches() {
-        const data = localStorage.getItem('futbol_total_matches');
-        return data ? JSON.parse(data) : initialMatchesSeed;
+    function getStoredCity() {
+        return localStorage.getItem('ft_selected_city_id') || 'bogota';
     }
 
-    function setStoredMatches(matches) {
-        localStorage.setItem('futbol_total_matches', JSON.stringify(matches));
+    function setStoredCity(cityId) {
+        localStorage.setItem('ft_selected_city_id', cityId);
     }
 
     function getStoredBookings() {
@@ -1652,8 +1856,9 @@
         localStorage.setItem('futbol_total_my_bookings', JSON.stringify(list));
     }
 
-    // State
-    let matchesList = getStoredMatches();
+    // App State
+    let currentCityId = getStoredCity();
+    let matchesList = initialMatchesSeed;
     let selectedDayIndex = 0;
     let selectedZone = 'all';
     let selectedFormat = 'all';
@@ -1665,6 +1870,64 @@
 
     const dayNamesShort = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
     const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    // City Selector Management
+    function openCityModal() {
+        renderCityModalList();
+        document.getElementById('cityModal').classList.add('open');
+        lucide.createIcons();
+    }
+
+    function closeCityModal() {
+        document.getElementById('cityModal').classList.remove('open');
+    }
+
+    function renderCityModalList() {
+        const container = document.getElementById('cityListContainer');
+        container.innerHTML = citiesData.map(c => `
+            <div class="city-option-item ${c.id === currentCityId ? 'selected' : ''}" onclick="selectCity('${c.id}')">
+                <div>
+                    <div class="city-name-text">${c.name}</div>
+                    <div class="city-dept-text">${c.dept}</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span class="city-badge-count">${c.venuesCount} Sedes</span>
+                    ${c.id === currentCityId ? '<i data-lucide="check" style="width:16px; height:16px; color:var(--neon);"></i>' : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function selectCity(cityId) {
+        currentCityId = cityId;
+        setStoredCity(cityId);
+        selectedZone = 'all';
+        closeCityModal();
+        applyCityChange();
+        const city = citiesData.find(c => c.id === cityId);
+        showToast(`📍 Ciudad cambiada a ${city.name}`);
+    }
+
+    function applyCityChange() {
+        const city = citiesData.find(c => c.id === currentCityId) || citiesData[0];
+        document.getElementById('headerCityLabel').innerText = city.shortName;
+        document.getElementById('heroCityTag').innerText = `Canchas & Club • ${city.name}`;
+        
+        // Render Zone chips for this city
+        renderZoneChips(city.zones);
+        renderCalendarStrip();
+        renderMatches();
+    }
+
+    function renderZoneChips(zones) {
+        const track = document.getElementById('zoneFilterList');
+        track.innerHTML = zones.map(z => `
+            <button class="filter-pill ${ (z === 'Todas' && selectedZone === 'all') || z === selectedZone ? 'active' : '' }" 
+                    onclick="setZoneFilter('${z === 'Todas' ? 'all' : z}', this)">
+                ${z}
+            </button>
+        `).join('');
+    }
 
     // 1. Calendar View Switcher
     function setCalendarView(mode) {
@@ -1698,7 +1961,7 @@
         for (let i = 0; i < 14; i++) {
             const d = new Date();
             d.setDate(today.getDate() + i);
-            const count = matchesList.filter(m => m.dayOffset === i).length;
+            const count = matchesList.filter(m => m.cityId === currentCityId && m.dayOffset === i).length;
 
             const card = document.createElement('div');
             card.className = `cal-item ${i === selectedDayIndex ? 'active' : ''}`;
@@ -1748,7 +2011,7 @@
             const diffTime = currentCellDate.getTime() - today.getTime();
             const dayOffset = Math.round(diffTime / (1000 * 3600 * 24));
 
-            const hasMatches = matchesList.some(m => m.dayOffset === dayOffset);
+            const hasMatches = matchesList.some(m => m.cityId === currentCityId && m.dayOffset === dayOffset);
             const isSelected = selectedDayIndex === dayOffset;
 
             const dayCell = document.createElement('div');
@@ -1784,13 +2047,14 @@
         const onlySpots = document.getElementById('onlySpotsCheckbox').checked;
 
         const filtered = matchesList.filter(m => {
+            const cityOk = m.cityId === currentCityId;
             const dayOk = m.dayOffset === selectedDayIndex;
             const zoneOk = selectedZone === 'all' || m.zone === selectedZone;
             const formatOk = selectedFormat === 'all' || m.format === selectedFormat;
             const surfaceOk = selectedSurface === 'all' || m.surface === selectedSurface;
             const spotsOk = !onlySpots || m.spots > 0;
             const searchOk = !search || m.name.toLowerCase().includes(search) || m.location.toLowerCase().includes(search) || m.zone.toLowerCase().includes(search);
-            return dayOk && zoneOk && formatOk && surfaceOk && spotsOk && searchOk;
+            return cityOk && dayOk && zoneOk && formatOk && surfaceOk && spotsOk && searchOk;
         });
 
         badge.innerText = `${filtered.length} ${filtered.length === 1 ? 'partido' : 'partidos'}`;
@@ -1890,7 +2154,6 @@
         document.getElementById('detCategory').innerText = `SEDE PREMIUM • ${activeMatch.zone.toUpperCase()}`;
         document.getElementById('detailBanner').style.backgroundImage = `url(${activeMatch.img})`;
 
-        // Populate High-Impact Showcase Card
         document.getElementById('detTimeBig').innerText = activeMatch.time;
         document.getElementById('detDateBadge').innerText = `${selectedDayIndex === 0 ? 'HOY' : 'DÍA SELECCIONADO'} • HORARIO CONFIRMADO`;
         document.getElementById('detLocationBig').innerText = `${activeMatch.zone} • ${activeMatch.location}`;
@@ -2050,8 +2313,7 @@
 
     // Initialize
     loadProfileData();
-    renderCalendarStrip();
-    renderMatches();
+    applyCityChange();
     lucide.createIcons();
 </script>
 
