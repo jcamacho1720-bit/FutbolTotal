@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fútbol Bogotá Elite | Pro Version</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon: #ccff00;
+            --gold: #D4AF37;
+            --bg-black: #000000;
+            --bg-card: #0a0a0a;
+            --bg-accent: #111111;
+            --text-main: #ffffff;
+            --text-dim: #888888;
+            --border: rgba(204, 255, 0, 0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-black); color: var(--text-main); overflow-x: hidden; }
+
+        .app-container { max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg-black); display: flex; flex-direction: column; position: relative; }
+        .status-bar { padding: 15px 20px; display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+
+        .screen { display: none; flex: 1; overflow-y: auto; padding-bottom: 110px; animation: fadeIn 0.3s ease; }
+        .screen.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .content-padding { padding: 0 20px; }
+        .section-title { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 900; text-transform: uppercase; line-height: 1; margin-bottom: 5px; }
+        .section-title span { color: var(--neon); }
+        .section-subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 15px; }
+
+        /* Calendario */
+        .date-slider { display: flex; overflow-x: auto; gap: 12px; padding: 20px; scrollbar-width: none; }
+        .date-slider::-webkit-scrollbar { display: none; }
+        .date-item { min-width: 60px; height: 80px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
+        .date-item.active { background: var(--neon); border-color: var(--neon); }
+        .date-item span:first-child { font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; }
+        .date-item span:last-child { font-family: 'Montserrat'; font-size: 20px; color: #fff; }
+        .date-item.active span { color: #000 !important; }
+
+        /* Partidos */
+        .match-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 15px; display: flex; gap: 15px; cursor: pointer; }
+        .match-time-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 70px; border-right: 1px solid var(--border); }
+        .match-time { font-family: 'Montserrat'; font-size: 18px; color: var(--neon); }
+        .match-name { font-size: 17px; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
+        .match-meta { font-size: 11px; color: var(--text-dim); display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+
+        /* Chips y Listas */
+        .chip-container { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
+        .chip { background: var(--bg-accent); border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 11px; color: var(--gold); font-weight: 600; }
+        .players-list { display: flex; gap: -10px; margin-top: 10px; }
+        .player-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--bg-black); background: #333; overflow: hidden; margin-left: -8px; }
+        .player-avatar:first-child { margin-left: 0; }
+        .player-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Extras y Pagos */
+        .extra-card { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg-accent); border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border); cursor: pointer; }
+        .extra-card.selected { border-color: var(--neon); background: rgba(204, 255, 0, 0.05); }
+        .check-dot { width: 18px; height: 18px; border: 2px solid var(--neon); border-radius: 50%; }
+        .extra-card.selected .check-dot { background: var(--neon); box-shadow: 0 0 10px var(--neon); }
+
+        /* Perfil */
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-size: 11px; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; font-weight: 700; }
+        .input-group input, .input-group select { width: 100%; background: var(--bg-accent); border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: #fff; font-family: 'Inter'; }
+
+        /* Chat */
+        .chat-search { background: var(--bg-accent); border: 1px solid var(--border); padding: 10px; border-radius: 10px; width: 100%; color: #fff; margin-bottom: 20px; }
+        .chat-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; }
+
+        /* Estética de Detalle e Imágenes */
+        .banner-container { position: relative; height: 280px; width: 100%; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 30px 20px; }
+        .banner-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(0,0,0,0) 70%); }
+        .banner-content { position: relative; z-index: 2; }
+        .btn-back { position: absolute; top: 20px; left: 20px; z-index: 10; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 15px; border-radius: 20px; font-size: 11px; cursor: pointer; }
+
+        .action-footer { position: fixed; bottom: 85px; width: 100%; max-width: 480px; padding: 0 20px; z-index: 100; }
+        .btn-main { background: var(--neon); color: #000; border: none; padding: 18px; border-radius: 14px; width: 100%; font-family: 'Montserrat'; font-weight: 900; font-size: 15px; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; box-shadow: 0 10px 30px rgba(204, 255, 0, 0.2); }
+
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 80px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-dim); font-size: 10px; cursor: pointer; }
+        .nav-item.active { color: var(--neon); }
+        .nav-icon { font-size: 20px; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="status-bar">
+        <span>BOGOTÁ ELITE PRO</span>
+        <span id="currentTime">--:--</span>
+    </div>
+
+    <div class="screen active" id="exploreScreen">
+        <div class="content-padding" style="margin-top: 10px;">
+            <h1 class="section-title">Busca tu <span>Partido</span></h1>
+        </div>
+        <div class="date-slider" id="dateSlider"></div>
+        <div class="content-padding">
+            <p class="section-subtitle">Partidos para esta fecha</p>
+            <div id="matchList"></div>
+        </div>
+    </div>
+
+    <div class="screen" id="detailScreen">
+        <div id="fieldBanner" class="banner-container">
+            <button class="btn-back" onclick="showScreen('exploreScreen')">← VOLVER</button>
+            <div class="banner-overlay"></div>
+            <div class="banner-content">
+                <span style="color: var(--neon); font-weight: 800; font-size: 12px; letter-spacing: 2px;">BOGOTÁ, DC</span>
+                <h1 id="detName" class="section-title" style="color: white; font-size: 32px;">NOMBRE</h1>
+            </div>
+        </div>
+        <div class="content-padding">
+            <div class="match-meta" style="font-size: 14px; margin: 20px 0;">
+                <span id="detDate">📅 Hoy, 11 Mayo</span>
+                <span>•</span>
+                <span id="detTime">⏰ 19:00 - 20:00</span>
+                <span>•</span>
+                <span id="detType" style="color: var(--neon); font-weight: 800;">⚽ 6v6</span>
+            </div>
+
+            <div style="background: var(--bg-accent); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px;">
+                <h4 style="color: var(--gold); font-size: 11px; margin-bottom: 8px; text-transform: uppercase;">Detalles del Campo</h4>
+                <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">Gramilla certificada FIFA, iluminación LED de última generación y vestuarios VIP. Incluye petos y arbitraje profesional.</p>
+            </div>
+
+            <div class="chip-container">
+                <div class="chip">🌱 Sintética</div>
+                <div class="chip">☁️ Campo Abierto</div>
+                <div class="chip">🍺 Bar</div>
+                <div class="chip">🚿 Duchas</div>
+                <div class="chip">👕 Vestuarios</div>
+            </div>
+
+            <div style="background: var(--bg-accent); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px;">
+                <h4 style="color: var(--gold); font-size: 11px; margin-bottom: 8px; text-transform: uppercase;">Jugadores Confirmados</h4>
+                <div class="players-list">
+                    <div class="player-avatar"><img src="https://i.pravatar.cc/100?u=1"></div>
+                    <div class="player-avatar"><img src="https://i.pravatar.cc/100?u=2"></div>
+                    <div class="player-avatar"><img src="https://i.pravatar.cc/100?u=3"></div>
+                    <div class="player-avatar" style="background: var(--neon); color: #000; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800;">+5</div>
+                </div>
+            </div>
+
+            <div class="action-footer">
+                <button class="btn-main" onclick="showScreen('paymentScreen')">
+                    <span>CONTINUAR RESERVA</span>
+                    <span id="detPrice">$25.000</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="paymentScreen">
+        <div class="content-padding" style="padding-top: 20px;">
+            <button onclick="showScreen('detailScreen')" style="background:none; border:none; color:var(--neon); margin-bottom:20px; font-weight:700; cursor:pointer;">← REGRESAR</button>
+            <h1 class="section-title">Añade <span>Extras</span></h1>
+            <p class="section-subtitle">Mejora tu experiencia de juego</p>
+
+            <div id="extrasContainer">
+                <div class="extra-card" onclick="toggleExtra(this, 15000)">
+                    <div><p style="font-weight: 700; font-size: 15px;">📸 Fotos Pro</p><p style="font-size: 11px; color: var(--text-dim);">Tus mejores jugadas en 4K</p></div>
+                    <div style="display: flex; align-items: center; gap: 12px;"><span style="color: var(--gold); font-weight: 800;">+$15k</span><div class="check-dot"></div></div>
+                </div>
+
+                <div class="extra-card" onclick="toggleExtra(this, 7000)">
+                    <div><p style="font-weight: 700; font-size: 15px;">⚡ Gatorade Frío</p><p style="font-size: 11px; color: var(--text-dim);">Entregado en la cancha</p></div>
+                    <div style="display: flex; align-items: center; gap: 12px;"><span style="color: var(--gold); font-weight: 800;">+$7k</span><div class="check-dot"></div></div>
+                </div>
+
+                <div class="extra-card" onclick="toggleExtra(this, 5000)">
+                    <div><p style="font-weight: 700; font-size: 15px;">🛡️ Alquiler de Canilleras</p><p style="font-size: 11px; color: var(--text-dim);">Protección profesional</p></div>
+                    <div style="display: flex; align-items: center; gap: 12px;"><span style="color: var(--gold); font-weight: 800;">+$5k</span><div class="check-dot"></div></div>
+                </div>
+
+                <div class="extra-card" onclick="toggleExtra(this, 3000)">
+                    <div><p style="font-weight: 700; font-size: 15px;">🗼 Alquiler de Torretines</p><p style="font-size: 11px; color: var(--text-dim);">Para entrenamiento específico</p></div>
+                    <div style="display: flex; align-items: center; gap: 12px;"><span style="color: var(--gold); font-weight: 800;">+$3k</span><div class="check-dot"></div></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 20px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <span style="font-weight: 700;">TOTAL FINAL</span>
+                    <span id="finalTotal" style="color: var(--neon); font-weight: 900; font-size: 24px;">$25.000</span>
+                </div>
+                <button class="btn-main" onclick="alert('⚽ ¡Reserva Exitosa!\nTe esperamos en la cancha.')">CONFIRMAR Y PAGAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="chatScreen">
+        <div class="content-padding" style="margin-top: 10px;">
+            <h1 class="section-title">Mis <span>Chats</span></h1>
+            <input type="text" class="chat-search" placeholder="Buscar jugador por nombre...">
+            <div class="chat-item" style="border: 1px solid var(--neon); border-radius: 12px; margin-bottom: 15px; background: rgba(204, 255, 0, 0.05);">
+                <div class="player-avatar" style="width: 45px; height: 45px; border-color: var(--neon);"><img src="https://cdn-icons-png.flaticon.com/512/33/33736.png"></div>
+                <div class="chat-info" style="margin-left:15px;">
+                    <h4 style="color: var(--neon);">Grupo: Salitre 8:00PM (Sáb)</h4>
+                    <p style="color: var(--text-dim); font-size: 12px;">Carlos: ¡Muchachos, lleven petos azules!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="screen" id="profileScreen">
+        <div class="content-padding" style="margin-top: 10px;">
+            <h1 class="section-title">Mi <span>Perfil</span></h1>
+            <div class="input-group" style="margin-top:20px;"><label>Nombre</label><input type="text" value="Camilo Torres"></div>
+            <div class="input-group"><label>Posición</label><select><option>Portero</option><option selected>Delantero</option></select></div>
+            <button class="btn-main" style="width:100%; justify-content:center;">GUARDAR</button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active" onclick="showScreen('exploreScreen', this)">
+            <span class="nav-icon">🏟️</span><span>JUGAR</span>
+        </div>
+        <div class="nav-item" onclick="showScreen('chatScreen', this)">
+            <span class="nav-icon">💬</span><span>CHAT</span>
+        </div>
+        <div class="nav-item" onclick="showScreen('profileScreen', this)">
+            <span class="nav-icon">👤</span><span>PERFIL</span>
+        </div>
+    </nav>
+</div>
+
+<script>
+    let currentBasePrice = 25000;
+    let extraTotal = 0;
+
+    const matchesData = {
+        0: [
+            { name: "Canchas El Campín 5", price: 25000, time: "19:00 - 20:00", spots: 4, type: "⚽ 5v5", img: "https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=600" },
+            { name: "Salitre Alto Rendimiento", price: 22000, time: "21:30 - 22:30", spots: 2, type: "⚽ 6v6", img: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=600" }
+        ],
+        1: [
+            { name: "Sede Norte Elite", price: 28000, time: "18:00 - 19:00", spots: 10, type: "⚽ 6v6", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600" }
+        ]
+    };
+
+    function setupCalendar() {
+        const slider = document.getElementById('dateSlider');
+        const days = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+        const today = new Date();
+        for (let i = 0; i < 7; i++) {
+            const date = new Date();
+            date.setDate(today.getDate() + i);
+            const item = document.createElement('div');
+            item.className = `date-item ${i === 0 ? 'active' : ''}`;
+            item.innerHTML = `<span>${days[date.getDay()]}</span><span>${date.getDate()}</span>`;
+            item.onclick = () => {
+                document.querySelectorAll('.date-item').forEach(d => d.classList.remove('active'));
+                item.classList.add('active');
+                renderMatches(i);
+            };
+            slider.appendChild(item);
+        }
+        renderMatches(0);
+    }
+
+    function renderMatches(dayIndex) {
+        const container = document.getElementById('matchList');
+        const matches = matchesData[dayIndex] || [];
+        container.innerHTML = matches.length ? '' : '<p style="color:gray; padding:20px;">No hay partidos.</p>';
+        matches.forEach(m => {
+            container.innerHTML += `
+                <div class="match-item" onclick="openMatch('${m.name}', ${m.price}, '${m.img}', '${m.time}', '${m.type}')">
+                    <div class="match-time-box"><span class="match-time">${m.time.split(' ')[0]}</span></div>
+                    <div class="match-info">
+                        <div class="match-name">${m.name}</div>
+                        <div class="match-meta"><span>${m.type}</span><span>🌱 Sintética</span></div>
+                        <span class="spots-badge">${m.spots} CUPOS LIBRES</span>
+                    </div>
+                </div>`;
+        });
+    }
+
+    function openMatch(name, price, imgUrl, time, type) {
+        currentBasePrice = price;
+        extraTotal = 0;
+        document.getElementById('detName').innerText = name;
+        document.getElementById('detPrice').innerText = '$' + price.toLocaleString('es-CO');
+        document.getElementById('finalTotal').innerText = '$' + price.toLocaleString('es-CO');
+        document.getElementById('detTime').innerText = '⏰ ' + time;
+        document.getElementById('detType').innerText = type;
+        document.getElementById('fieldBanner').style.backgroundImage = `url(${imgUrl})`;
+        document.querySelectorAll('.extra-card').forEach(c => c.classList.remove('selected'));
+        showScreen('detailScreen');
+    }
+
+    function toggleExtra(el, price) {
+        el.classList.toggle('selected');
+        extraTotal += el.classList.contains('selected') ? price : -price;
+        document.getElementById('finalTotal').innerText = '$' + (currentBasePrice + extraTotal).toLocaleString('es-CO');
+    }
+
+    function showScreen(id, navEl) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(navEl) {
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            navEl.classList.add('active');
+        }
+    }
+
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('currentTime').innerText = now.getHours() + ":" + String(now.getMinutes()).padStart(2, '0');
+    }, 1000);
+
+    setupCalendar();
+</script>
+
+</body>
+</html>
