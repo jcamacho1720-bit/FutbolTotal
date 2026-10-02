@@ -2,318 +2,2019 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fútbol Bogotá Elite | Pro Version</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fútbol Total | Matchday & Canchas VIP</title>
+    <meta name="description" content="Encuentra partidos, reserva canchas sintéticas y personaliza tu partido con extras VIP: fotos pro, hidratación, árbitro y tercer tiempo.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --neon: #ccff00;
-            --gold: #D4AF37;
-            --bg-black: #000000;
-            --bg-card: #0a0a0a;
-            --bg-accent: #111111;
-            --text-main: #ffffff;
-            --text-dim: #888888;
-            --border: rgba(204, 255, 0, 0.15);
+            --primary: #ccff00;
+            --primary-glow: rgba(204, 255, 0, 0.35);
+            --primary-dark: #a6d200;
+            --gold: #f59e0b;
+            --gold-glow: rgba(245, 158, 11, 0.3);
+            --bg-base: #08080a;
+            --bg-card: #111116;
+            --bg-card-hover: #171720;
+            --bg-elevated: #1a1a24;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-neon: rgba(204, 255, 0, 0.25);
+            --border-neon-strong: #ccff00;
+            --danger: #ef4444;
+            --success: #10b981;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-full: 9999px;
+            --font-display: 'Outfit', sans-serif;
+            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 25px var(--primary-glow);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-black); color: var(--text-main); overflow-x: hidden; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        .app-container { max-width: 480px; margin: 0 auto; min-height: 100vh; background: var(--bg-black); display: flex; flex-direction: column; position: relative; }
-        .status-bar { padding: 15px 20px; display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--gold); letter-spacing: 1px; }
+        body {
+            font-family: var(--font-body);
+            background-color: #030305;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            overflow-x: hidden;
+        }
 
-        .screen { display: none; flex: 1; overflow-y: auto; padding-bottom: 110px; animation: fadeIn 0.3s ease; }
-        .screen.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Mobile Container Frame */
+        .app-shell {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            background-color: var(--bg-base);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.8), 0 0 1px rgba(255, 255, 255, 0.1);
+        }
 
-        .content-padding { padding: 0 20px; }
-        .section-title { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 900; text-transform: uppercase; line-height: 1; margin-bottom: 5px; }
-        .section-title span { color: var(--neon); }
-        .section-subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 15px; }
+        /* Ambient Glow Background Effect */
+        .ambient-glow {
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 380px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(204, 255, 0, 0.08) 0%, rgba(0,0,0,0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
 
-        /* Calendario */
-        .date-slider { display: flex; overflow-x: auto; gap: 12px; padding: 20px; scrollbar-width: none; }
-        .date-slider::-webkit-scrollbar { display: none; }
-        .date-item { min-width: 60px; height: 80px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; }
-        .date-item.active { background: var(--neon); border-color: var(--neon); }
-        .date-item span:first-child { font-size: 10px; font-weight: 800; color: var(--text-dim); text-transform: uppercase; }
-        .date-item span:last-child { font-family: 'Montserrat'; font-size: 20px; color: #fff; }
-        .date-item.active span { color: #000 !important; }
+        /* Top Header Bar */
+        .top-bar {
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(8, 8, 10, 0.85);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
 
-        /* Partidos */
-        .match-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 15px; display: flex; gap: 15px; cursor: pointer; }
-        .match-time-box { display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 70px; border-right: 1px solid var(--border); }
-        .match-time { font-family: 'Montserrat'; font-size: 18px; color: var(--neon); }
-        .match-name { font-size: 17px; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
-        .match-meta { font-size: 11px; color: var(--text-dim); display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-display);
+            font-weight: 900;
+            font-size: 19px;
+            letter-spacing: -0.5px;
+        }
 
-        /* Chips y Listas */
-        .chip-container { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
-        .chip { background: var(--bg-accent); border: 1px solid var(--border); padding: 6px 12px; border-radius: 20px; font-size: 11px; color: var(--gold); font-weight: 600; }
-        .players-list { display: flex; gap: -10px; margin-top: 10px; }
-        .player-avatar { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--bg-black); background: #333; overflow: hidden; margin-left: -8px; }
-        .player-avatar:first-child { margin-left: 0; }
-        .player-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .brand-logo .ball-icon {
+            color: var(--primary);
+            font-size: 20px;
+            filter: drop-shadow(0 0 8px var(--primary-glow));
+        }
 
-        /* Extras y Pagos */
-        .extra-card { display: flex; justify-content: space-between; align-items: center; padding: 16px; background: var(--bg-accent); border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border); cursor: pointer; }
-        .extra-card.selected { border-color: var(--neon); background: rgba(204, 255, 0, 0.05); }
-        .check-dot { width: 18px; height: 18px; border: 2px solid var(--neon); border-radius: 50%; }
-        .extra-card.selected .check-dot { background: var(--neon); box-shadow: 0 0 10px var(--neon); }
+        .brand-logo span span {
+            color: var(--primary);
+        }
 
-        /* Perfil */
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; font-size: 11px; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; font-weight: 700; }
-        .input-group input, .input-group select { width: 100%; background: var(--bg-accent); border: 1px solid var(--border); padding: 12px; border-radius: 10px; color: #fff; font-family: 'Inter'; }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-        /* Chat */
-        .chat-search { background: var(--bg-accent); border: 1px solid var(--border); padding: 10px; border-radius: 10px; width: 100%; color: #fff; margin-bottom: 20px; }
-        .chat-item { display: flex; align-items: center; gap: 15px; padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; }
+        .live-badge {
+            background: rgba(204, 255, 0, 0.12);
+            color: var(--primary);
+            border: 1px solid var(--border-neon);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-        /* Estética de Detalle e Imágenes */
-        .banner-container { position: relative; height: 280px; width: 100%; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 30px 20px; }
-        .banner-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(0deg, rgba(0,0,0,1) 5%, rgba(0,0,0,0) 70%); }
-        .banner-content { position: relative; z-index: 2; }
-        .btn-back { position: absolute; top: 20px; left: 20px; z-index: 10; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 15px; border-radius: 20px; font-size: 11px; cursor: pointer; }
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--primary);
+            animation: pulseDot 1.8s infinite;
+        }
 
-        .action-footer { position: fixed; bottom: 85px; width: 100%; max-width: 480px; padding: 0 20px; z-index: 100; }
-        .btn-main { background: var(--neon); color: #000; border: none; padding: 18px; border-radius: 14px; width: 100%; font-family: 'Montserrat'; font-weight: 900; font-size: 15px; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; box-shadow: 0 10px 30px rgba(204, 255, 0, 0.2); }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; height: 80px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border); z-index: 1000; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-dim); font-size: 10px; cursor: pointer; }
-        .nav-item.active { color: var(--neon); }
-        .nav-icon { font-size: 20px; margin-bottom: 4px; }
+        /* Main Screen Container */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 95px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .screen {
+            display: none;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .content-wrap {
+            padding: 0 18px;
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            padding: 20px 18px 12px;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title .highlight {
+            color: var(--primary);
+            text-shadow: 0 0 15px rgba(204, 255, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+        /* Dynamic Calendar Slider */
+        .calendar-section {
+            margin: 15px 0 10px;
+        }
+
+        .section-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 18px;
+            margin-bottom: 10px;
+        }
+
+        .section-tag {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .calendar-slider {
+            display: flex;
+            gap: 9px;
+            overflow-x: auto;
+            padding: 4px 18px 14px;
+            scrollbar-width: none;
+        }
+
+        .calendar-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cal-day-card {
+            min-width: 62px;
+            height: 78px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .cal-day-card:hover {
+            border-color: var(--border-neon);
+            background: var(--bg-card-hover);
+        }
+
+        .cal-day-card.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        .cal-day-name {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .cal-day-num {
+            font-family: var(--font-display);
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--text-main);
+            margin: 2px 0;
+            line-height: 1;
+        }
+
+        .cal-day-matches {
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(204, 255, 0, 0.12);
+            padding: 2px 6px;
+            border-radius: var(--radius-full);
+        }
+
+        .cal-day-card.active .cal-day-name {
+            color: #1a2e05;
+        }
+
+        .cal-day-card.active .cal-day-num {
+            color: #000;
+        }
+
+        .cal-day-card.active .cal-day-matches {
+            color: #000;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        /* Filter Controls */
+        .filter-container {
+            padding: 0 18px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            gap: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 12px rgba(204, 255, 0, 0.15);
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 13px;
+            width: 100%;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .filter-scroll-row {
+            display: flex;
+            gap: 7px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 2px;
+        }
+
+        .filter-scroll-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .filter-chip {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .filter-chip:hover {
+            color: var(--text-main);
+            border-color: var(--border-neon);
+        }
+
+        .filter-chip.active {
+            background: rgba(204, 255, 0, 0.12);
+            color: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(204, 255, 0, 0.15);
+        }
+
+        /* Match Cards */
+        .match-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 0 18px;
+        }
+
+        .match-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .match-card:hover {
+            border-color: var(--border-neon);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card), 0 0 20px rgba(204, 255, 0, 0.08);
+        }
+
+        .match-card-media {
+            position: relative;
+            height: 135px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .match-card-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .match-card:hover .match-card-media img {
+            transform: scale(1.05);
+        }
+
+        .match-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, var(--bg-card) 5%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.6) 100%);
+        }
+
+        .match-badge-top-left {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .match-badge-top-right {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(245, 158, 11, 0.9);
+            color: #000;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .match-card-body {
+            padding: 14px 16px 16px;
+        }
+
+        .match-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+
+        .match-venue-name {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.3px;
+        }
+
+        .match-price-tag {
+            text-align: right;
+        }
+
+        .match-price-val {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .match-price-sub {
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
+        .match-location-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 12px;
+        }
+
+        .match-tags-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .mini-tag {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            padding: 3px 9px;
+            border-radius: var(--radius-sm);
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .match-footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .spots-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .spots-bar-bg {
+            width: 75px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+        }
+
+        .spots-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: var(--radius-full);
+        }
+
+        .spots-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .btn-view-match {
+            background: rgba(204, 255, 0, 0.15);
+            color: var(--primary);
+            border: 1px solid var(--border-neon);
+            padding: 6px 14px;
+            border-radius: var(--radius-md);
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .match-card:hover .btn-view-match {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        /* Detail Screen Styles */
+        .detail-hero {
+            position: relative;
+            height: 250px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 16px;
+        }
+
+        .detail-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(0deg, var(--bg-base) 10%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.7) 100%);
+            z-index: 1;
+        }
+
+        .detail-nav-row {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-round-glass {
+            width: 38px;
+            height: 38px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.2s;
+        }
+
+        .btn-round-glass:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .detail-header-info {
+            position: relative;
+            z-index: 2;
+        }
+
+        .detail-tag-category {
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .detail-title {
+            font-family: var(--font-display);
+            font-size: 26px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: #fff;
+        }
+
+        .detail-quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .quick-stat-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            padding: 12px 10px;
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .stat-icon {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .stat-val {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-top: 2px;
+        }
+
+        /* VIP Extras Section */
+        .extras-hub {
+            margin: 20px 0;
+        }
+
+        .section-header-badge {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .hub-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hub-tag {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            font-size: 10px;
+            font-weight: 900;
+            padding: 3px 8px;
+            border-radius: var(--radius-full);
+            letter-spacing: 0.5px;
+        }
+
+        .extra-category-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 16px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .extras-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .extra-item-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .extra-item-card:hover {
+            border-color: var(--border-neon);
+            background: var(--bg-card-hover);
+        }
+
+        .extra-item-card.selected {
+            background: rgba(204, 255, 0, 0.05);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(204, 255, 0, 0.12);
+        }
+
+        .extra-item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .extra-item-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+            border: 1px solid var(--border-subtle);
+            transition: transform 0.2s;
+        }
+
+        .extra-item-card.selected .extra-item-icon {
+            background: rgba(204, 255, 0, 0.15);
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .extra-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .extra-desc {
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        .extra-right-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: 10px;
+        }
+
+        .extra-price-tag {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--gold);
+            white-space: nowrap;
+        }
+
+        .custom-checkbox {
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .extra-item-card.selected .custom-checkbox {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        /* Combo Pack Banner */
+        .combo-vip-banner {
+            background: linear-gradient(135deg, #1f1b0a 0%, #15151b 100%);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .combo-vip-banner:hover {
+            border-color: var(--gold);
+            transform: translateY(-1px);
+        }
+
+        .combo-vip-banner.selected {
+            border-color: var(--gold);
+            background: rgba(245, 158, 11, 0.1);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        /* Split Match Calculator */
+        .split-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .split-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .split-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .split-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-elevated);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .split-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 900;
+            font-size: 16px;
+            cursor: pointer;
+            width: 20px;
+        }
+
+        .split-num {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .split-result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .split-result-val {
+            font-family: var(--font-display);
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--primary);
+        }
+
+        /* Squad / Lineup View */
+        .squad-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin: 20px 0;
+        }
+
+        .squad-avatars {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .player-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 10px 4px 4px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .player-chip img {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .player-chip.open-slot {
+            border: 1px dashed var(--border-neon);
+            color: var(--primary);
+            background: rgba(204, 255, 0, 0.05);
+            cursor: pointer;
+        }
+
+        /* Floating Sticky Action Footer */
+        .action-bar-fixed {
+            position: fixed;
+            bottom: 74px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            padding: 10px 18px;
+            background: rgba(8, 8, 10, 0.92);
+            backdrop-filter: blur(14px);
+            border-top: 1px solid var(--border-subtle);
+            z-index: 80;
+        }
+
+        .btn-cta-main {
+            width: 100%;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 8px 25px var(--primary-glow);
+            transition: all 0.2s;
+        }
+
+        .btn-cta-main:hover {
+            transform: translateY(-2px);
+            background: #d8ff1a;
+            box-shadow: 0 12px 30px var(--primary-glow);
+        }
+
+        .btn-cta-main:active {
+            transform: translateY(0);
+        }
+
+        /* Bottom Tab Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            height: 74px;
+            background: #08080a;
+            border-top: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            padding-bottom: 6px;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: all 0.2s;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+        }
+
+        .nav-btn .nav-icon {
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+
+        .nav-btn.active {
+            color: var(--primary);
+        }
+
+        .nav-btn.active .nav-icon {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 0 8px var(--primary-glow));
+        }
+
+        /* Success / Ticket Modal Screen */
+        .ticket-card {
+            background: var(--bg-card);
+            border: 2px dashed var(--border-neon);
+            border-radius: var(--radius-lg);
+            padding: 24px 20px;
+            margin: 20px 0;
+            text-align: center;
+            position: relative;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .qr-placeholder {
+            width: 140px;
+            height: 140px;
+            margin: 16px auto;
+            background: #fff;
+            padding: 10px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qr-placeholder img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .btn-whatsapp-share {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 14px;
+            font-weight: 800;
+            font-size: 13px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-whatsapp-share:hover {
+            background: #20bd5a;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-50px);
+            background: var(--primary);
+            color: #000;
+            font-weight: 800;
+            font-size: 12px;
+            padding: 10px 20px;
+            border-radius: var(--radius-full);
+            z-index: 200;
+            box-shadow: 0 10px 25px var(--primary-glow);
+            transition: transform 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <div class="status-bar">
-        <span>BOGOTÁ ELITE PRO</span>
-        <span id="currentTime">--:--</span>
-    </div>
+<div class="ambient-glow"></div>
+<div id="toast" class="toast">✨ ¡Enlace copiado para WhatsApp!</div>
 
-    <div class="screen active" id="exploreScreen">
-        <div class="content-padding" style="margin-top: 10px;">
-            <h1 class="section-title">Busca tu <span>Partido</span></h1>
-        </div>
-        <div class="date-slider" id="dateSlider"></div>
-        <div class="content-padding">
-            <p class="section-subtitle">Partidos para esta fecha</p>
-            <div id="matchList"></div>
-        </div>
-    </div>
+<div class="app-shell">
 
-    <div class="screen" id="detailScreen">
-        <div id="fieldBanner" class="banner-container">
-            <button class="btn-back" onclick="showScreen('exploreScreen')">← VOLVER</button>
-            <div class="banner-overlay"></div>
-            <div class="banner-content">
-                <span style="color: var(--neon); font-weight: 800; font-size: 12px; letter-spacing: 2px;">BOGOTÁ, DC</span>
-                <h1 id="detName" class="section-title" style="color: white; font-size: 32px;">NOMBRE</h1>
+    <!-- Top Header Bar -->
+    <header class="top-bar">
+        <div class="brand-logo">
+            <span class="ball-icon">⚽</span>
+            <span>FÚTBOL<span>TOTAL</span></span>
+        </div>
+        <div class="header-actions">
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                <span>BOGOTÁ DC</span>
             </div>
         </div>
-        <div class="content-padding">
-            <div class="match-meta" style="font-size: 14px; margin: 20px 0;">
-                <span id="detDate">📅 Hoy, 11 Mayo</span>
-                <span>•</span>
-                <span id="detTime">⏰ 19:00 - 20:00</span>
-                <span>•</span>
-                <span id="detType" style="color: var(--neon); font-weight: 800;">⚽ 6v6</span>
+    </header>
+
+    <!-- Main Screens Container -->
+    <main class="main-content">
+
+        <!-- SCREEN 1: EXPLORE / BUSCAR PARTIDOS -->
+        <section class="screen active" id="exploreScreen">
+            <div class="hero-banner">
+                <h1 class="hero-title">ARMA TU <span class="highlight">PARTIDO</span></h1>
+                <p class="hero-subtitle">Canchas sintéticas premium + Servicios VIP para tu equipo</p>
             </div>
 
-            <div style="background: var(--bg-accent); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px;">
-                <h4 style="color: var(--gold); font-size: 11px; margin-bottom: 8px; text-transform: uppercase;">Detalles del Campo</h4>
-                <p style="font-size: 13px; color: var(--text-dim); line-height: 1.6;">Gramilla certificada FIFA, iluminación LED de última generación y vestuarios VIP. Incluye petos y arbitraje profesional.</p>
+            <!-- Dynamic Date Picker -->
+            <div class="calendar-section">
+                <div class="section-header-row">
+                    <span class="section-tag">📅 SELECCIONA EL DÍA</span>
+                    <span id="currentMonthName" style="font-size: 11px; font-weight: 800; color: var(--primary);">MAYO 2026</span>
+                </div>
+                <div class="calendar-slider" id="calendarSlider"></div>
             </div>
 
-            <div class="chip-container">
-                <div class="chip">🌱 Sintética</div>
-                <div class="chip">☁️ Campo Abierto</div>
-                <div class="chip">🍺 Bar</div>
-                <div class="chip">🚿 Duchas</div>
-                <div class="chip">👕 Vestuarios</div>
-            </div>
+            <!-- Filter Controls -->
+            <div class="filter-container">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" id="searchInput" placeholder="Buscar por sede (Salitre, Norte, Chapinero...)" oninput="applyFilters()">
+                </div>
+                
+                <!-- Zone Filters -->
+                <div class="filter-scroll-row" id="zoneFilters">
+                    <button class="filter-chip active" onclick="setZoneFilter('all', this)">📍 Todas las zonas</button>
+                    <button class="filter-chip" onclick="setZoneFilter('Salitre', this)">Salitre</button>
+                    <button class="filter-chip" onclick="setZoneFilter('Zona Norte', this)">Zona Norte</button>
+                    <button class="filter-chip" onclick="setZoneFilter('Chapinero', this)">Chapinero</button>
+                    <button class="filter-chip" onclick="setZoneFilter('Calle 80', this)">Calle 80</button>
+                    <button class="filter-chip" onclick="setZoneFilter('Suba', this)">Suba</button>
+                </div>
 
-            <div style="background: var(--bg-accent); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px;">
-                <h4 style="color: var(--gold); font-size: 11px; margin-bottom: 8px; text-transform: uppercase;">Jugadores Confirmados</h4>
-                <div class="players-list">
-                    <div class="player-avatar"><img src="https://i.pravatar.cc/100?u=1"></div>
-                    <div class="player-avatar"><img src="https://i.pravatar.cc/100?u=2"></div>
-                    <div class="player-avatar"><img src="https://i.pravatar.cc/100?u=3"></div>
-                    <div class="player-avatar" style="background: var(--neon); color: #000; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800;">+5</div>
+                <!-- Format Filters -->
+                <div class="filter-scroll-row" id="formatFilters">
+                    <button class="filter-chip active" onclick="setFormatFilter('all', this)">⚡ Todos los formatos</button>
+                    <button class="filter-chip" onclick="setFormatFilter('5v5', this)">Fútbol 5</button>
+                    <button class="filter-chip" onclick="setFormatFilter('6v6', this)">Fútbol 6</button>
+                    <button class="filter-chip" onclick="setFormatFilter('8v8', this)">Fútbol 8</button>
+                    <button class="filter-chip" onclick="setFormatFilter('11v11', this)">Fútbol 11</button>
                 </div>
             </div>
 
-            <div class="action-footer">
-                <button class="btn-main" onclick="showScreen('paymentScreen')">
-                    <span>CONTINUAR RESERVA</span>
-                    <span id="detPrice">$25.000</span>
+            <!-- Matches List -->
+            <div class="content-wrap" style="margin-bottom: 10px;">
+                <div class="section-header-row" style="padding: 0;">
+                    <span class="section-tag">🏟️ CANCHAS DISPONIBLES</span>
+                    <span id="matchCountLabel" style="font-size: 11px; color: var(--text-dim);">3 partidos</span>
+                </div>
+            </div>
+            <div class="match-list" id="matchList"></div>
+        </section>
+
+
+        <!-- SCREEN 2: MATCH DETAILS & VIP EXTRAS HUB -->
+        <section class="screen" id="detailScreen">
+            <div class="detail-hero" id="detailBanner">
+                <div class="detail-overlay"></div>
+                <div class="detail-nav-row">
+                    <button class="btn-round-glass" onclick="goToScreen('exploreScreen')">←</button>
+                    <button class="btn-round-glass" onclick="shareMatchWhatsApp()">🔗</button>
+                </div>
+                <div class="detail-header-info">
+                    <div class="detail-tag-category" id="detCategory">SEDE PREMIUM • SALITRE</div>
+                    <h1 class="detail-title" id="detTitle">Canchas El Campín 5</h1>
+                </div>
+            </div>
+
+            <div class="content-wrap" style="padding-top: 16px;">
+                <!-- Quick Specs -->
+                <div class="detail-quick-stats">
+                    <div class="quick-stat-box">
+                        <div class="stat-icon">⏰</div>
+                        <div class="stat-label">Horario</div>
+                        <div class="stat-val" id="detTime">19:00 - 20:00</div>
+                    </div>
+                    <div class="quick-stat-box">
+                        <div class="stat-icon">⚽</div>
+                        <div class="stat-label">Formato</div>
+                        <div class="stat-val" id="detFormat">6 vs 6</div>
+                    </div>
+                    <div class="quick-stat-box">
+                        <div class="stat-icon">🌱</div>
+                        <div class="stat-label">Gramilla</div>
+                        <div class="stat-val">Sintética Pro</div>
+                    </div>
+                </div>
+
+                <!-- Squad / Confirmed Players View -->
+                <div class="squad-section">
+                    <div class="section-header-row" style="padding: 0;">
+                        <span class="section-tag">👥 JUGADORES CONFIRMADOS (<span id="confirmedCount">7</span>/12)</span>
+                        <span style="font-size: 11px; color: var(--primary); font-weight: 700;">5 cupos libres</span>
+                    </div>
+                    <div class="squad-avatars">
+                        <div class="player-chip"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100" alt="avatar"><span>Juan M. (C)</span></div>
+                        <div class="player-chip"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100" alt="avatar"><span>Mateo R.</span></div>
+                        <div class="player-chip"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100" alt="avatar"><span>David P.</span></div>
+                        <div class="player-chip"><img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=100" alt="avatar"><span>Camilo T.</span></div>
+                        <div class="player-chip open-slot" onclick="claimSlot()"><span>➕ Unirme al Partido</span></div>
+                    </div>
+                </div>
+
+                <!-- ================= EXTRAS VIP HUB (CORE VALUE PROPOSITION) ================= -->
+                <div class="extras-hub">
+                    <div class="section-header-badge">
+                        <div class="hub-title">
+                            <span>✨ EXTRAS & EXPERIENCIA VIP</span>
+                        </div>
+                        <span class="hub-tag">MATCHDAY PRO</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">Personaliza tu partido y vive una experiencia profesional con tus amigos:</p>
+
+                    <!-- COMBO PACK DE AHORRO -->
+                    <div class="combo-vip-banner" id="comboPackCard" onclick="toggleComboPack()">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <span style="background: var(--gold); color:#000; font-size:9px; font-weight:900; padding:2px 6px; border-radius:4px; text-transform:uppercase;">🔥 COMBO CAPITÁN VIP</span>
+                                <h4 style="font-size: 14px; font-weight:800; color:#fff; margin:4px 0 2px;">Árbitro + Petos + 10 Gatorades</h4>
+                                <p style="font-size: 11px; color: var(--text-muted);">Ahorra 20% en el paquete completo de partido</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: var(--gold); font-weight: 900; font-size: 16px;">+$55.000</div>
+                                <div style="font-size: 10px; color: var(--text-dim); text-decoration: line-through;">$70.000</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 1: Media & Recuerdos -->
+                    <div class="extra-category-title">📸 Media & Contenido Digital</div>
+                    <div class="extras-grid">
+                        <div class="extra-item-card" data-id="photos" data-price="25000" onclick="toggleExtra(this)">
+                            <div class="extra-item-info">
+                                <div class="extra-item-icon">📸</div>
+                                <div>
+                                    <div class="extra-name">Fotógrafo Pro 4K <span style="font-size: 9px; background: rgba(204,255,0,0.15); color:var(--primary); padding:1px 5px; border-radius:4px;">POPULAR</span></div>
+                                    <div class="extra-desc">Fotos de acción editadas para Instagram/TikTok</div>
+                                </div>
+                            </div>
+                            <div class="extra-right-box">
+                                <div class="extra-price-tag">+$25.000</div>
+                                <div class="custom-checkbox">✓</div>
+                            </div>
+                        </div>
+
+                        <div class="extra-item-card" data-id="video" data-price="35000" onclick="toggleExtra(this)">
+                            <div class="extra-item-info">
+                                <div class="extra-item-icon">🎥</div>
+                                <div>
+                                    <div class="extra-name">Grabación de Golazos HD</div>
+                                    <div class="extra-desc">Cámara fija de arco para revivir las mejores jugadas</div>
+                                </div>
+                            </div>
+                            <div class="extra-right-box">
+                                <div class="extra-price-tag">+$35.000</div>
+                                <div class="custom-checkbox">✓</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 2: Hidratación & Energía -->
+                    <div class="extra-category-title">⚡ Hidratación en Cancha</div>
+                    <div class="extras-grid">
+                        <div class="extra-item-card" data-id="gatorade" data-price="20000" onclick="toggleExtra(this)">
+                            <div class="extra-item-info">
+                                <div class="extra-item-icon">🧊</div>
+                                <div>
+                                    <div class="extra-name">Hielera + 6 Gatorades Helados</div>
+                                    <div class="extra-desc">Entregados directamente en el banquillo al iniciar</div>
+                                </div>
+                            </div>
+                            <div class="extra-right-box">
+                                <div class="extra-price-tag">+$20.000</div>
+                                <div class="custom-checkbox">✓</div>
+                            </div>
+                        </div>
+
+                        <div class="extra-item-card" data-id="water" data-price="12000" onclick="toggleExtra(this)">
+                            <div class="extra-item-info">
+                                <div class="extra-item-icon">💧</div>
+                                <div>
+                                    <div class="extra-name">Botellón Agua Mineral + Fruta</div>
+                                    <div class="extra-desc">Hidratación libre y bananos para el entretiempo</div>
+                                </div>
+                            </div>
+                            <div class="extra-right-box">
+                                <div class="extra-price-tag">+$12.000</div>
+                                <div class="custom-checkbox">✓</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 3: Equipamiento & Arbitraje -->
+                    <div class="extra-category-title">🛡️ Equipamiento & Arbitraje</div>
+                    <div class="extras-grid">
+                        <div class="extra-item-card" data-id="referee" data-price="35000" onclick="toggleExtra(this)">
+                            <div class="extra-item-info">
+                                <div class="extra-item-icon">⚖️</div>
+                                <div>
+                                    <div class="extra-name">Árbitro Federado Oficial</div>
+                                    <div class="extra-desc">Cero polémicas: juez profesional con silbato y tarjetas</div>
+                                </div>
+                            </div>
+                            <div class="extra-right-box">
+                                <div class="extra-price-tag">+$35.000</div>
+                                <div class="custom-checkbox">✓</div>
+                            </div>
+                        </div>
+
+                        <div class="extra-item-card" data-id="bibs" data-price="10000" onclick="toggleExtra(this)">
+                            <div class="extra-item-info">
+                                <div class="extra-item-icon">🎽</div>
+                                <div>
+                                    <div class="extra-name">Juego de Petos Limpios x2 Colores</div>
+                                    <div class="extra-desc">Petos lavados y desinfectados (10 unidades)</div>
+                                </div>
+                            </div>
+                            <div class="extra-right-box">
+                                <div class="extra-price-tag">+$10.000</div>
+                                <div class="custom-checkbox">✓</div>
+                            </div>
+                        </div>
+
+                        <div class="extra-item-card" data-id="ball" data-price="8000" onclick="toggleExtra(this)">
+                            <div class="extra-item-info">
+                                <div class="extra-item-icon">⚽</div>
+                                <div>
+                                    <div class="extra-name">Balón Oficial Nike / Adidas Match</div>
+                                    <div class="extra-desc">Balón térmico reglamentario inflado a presión exacta</div>
+                                </div>
+                            </div>
+                            <div class="extra-right-box">
+                                <div class="extra-price-tag">+$8.000</div>
+                                <div class="custom-checkbox">✓</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category 4: Tercer Tiempo -->
+                    <div class="extra-category-title">🍻 Tercer Tiempo & Celebración</div>
+                    <div class="extras-grid">
+                        <div class="extra-item-card" data-id="beers" data-price="45000" onclick="toggleExtra(this)">
+                            <div class="extra-item-info">
+                                <div class="extra-item-icon">🍻</div>
+                                <div>
+                                    <div class="extra-name">Balde 10 Cervezas + Mesa VIP</div>
+                                    <div class="extra-desc">Mesa reservada en el bar con cervezas listas al silbato final</div>
+                                </div>
+                            </div>
+                            <div class="extra-right-box">
+                                <div class="extra-price-tag">+$45.000</div>
+                                <div class="custom-checkbox">✓</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Split the Bill Calculator -->
+                <div class="split-box">
+                    <div class="split-header">
+                        <span class="split-title">➗ DIVIDIR CUENTA ENTRE AMIGOS</span>
+                        <div class="split-selector">
+                            <button class="split-btn" onclick="changeSplitPlayers(-1)">-</button>
+                            <span class="split-num" id="splitPlayersCount">10 amigos</span>
+                            <button class="split-btn" onclick="changeSplitPlayers(1)">+</button>
+                        </div>
+                    </div>
+                    <div class="split-result-row">
+                        <span style="font-size: 12px; color: var(--text-muted);">Cuota por jugador:</span>
+                        <span class="split-result-val" id="splitPricePerPerson">$12.000 / persona</span>
+                    </div>
+                </div>
+
+                <button class="btn-whatsapp-share" onclick="shareMatchWhatsApp()">
+                    <span>📲 Compartir Resumen en WhatsApp</span>
                 </button>
             </div>
-        </div>
-    </div>
 
-    <div class="screen" id="paymentScreen">
-        <div class="content-padding" style="padding-top: 20px;">
-            <button onclick="showScreen('detailScreen')" style="background:none; border:none; color:var(--neon); margin-bottom:20px; font-weight:700; cursor:pointer;">← REGRESAR</button>
-            <h1 class="section-title">Añade <span>Extras</span></h1>
-            <p class="section-subtitle">Mejora tu experiencia de juego</p>
+            <!-- Sticky Bottom CTA on Detail Screen -->
+            <div class="action-bar-fixed">
+                <button class="btn-cta-main" onclick="goToScreen('checkoutScreen')">
+                    <div>
+                        <div style="font-size: 11px; opacity: 0.8; font-weight:700;">TOTAL RESERVA</div>
+                        <div id="ctaGrandTotal" style="font-size: 18px; font-weight:900;">$120.000</div>
+                    </div>
+                    <span>CONTINUAR AL PAGO →</span>
+                </button>
+            </div>
+        </section>
 
-            <div id="extrasContainer">
-                <div class="extra-card" onclick="toggleExtra(this, 15000)">
-                    <div><p style="font-weight: 700; font-size: 15px;">📸 Fotos Pro</p><p style="font-size: 11px; color: var(--text-dim);">Tus mejores jugadas en 4K</p></div>
-                    <div style="display: flex; align-items: center; gap: 12px;"><span style="color: var(--gold); font-weight: 800;">+$15k</span><div class="check-dot"></div></div>
+
+        <!-- SCREEN 3: CHECKOUT & TICKET DE RESERVA -->
+        <section class="screen" id="checkoutScreen">
+            <div class="content-wrap" style="padding-top: 20px;">
+                <button onclick="goToScreen('detailScreen')" style="background:none; border:none; color:var(--primary); font-weight:800; font-size:13px; cursor:pointer; margin-bottom:14px;">← VOLVER AL PARTIDO</button>
+                
+                <h1 class="hero-title" style="font-size: 24px;">CONFIRMA TU <span class="highlight">RESERVA</span></h1>
+                <p class="hero-subtitle">Elige tu método de pago para asegurar la cancha y los extras VIP</p>
+
+                <div class="ticket-card" style="margin-top: 18px; text-align:left;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:12px; margin-bottom:12px;">
+                        <div>
+                            <span style="color:var(--primary); font-size:10px; font-weight:800; text-transform:uppercase;">RESUMEN DE PARTIDO</span>
+                            <h3 id="checkoutVenueName" style="font-size: 16px; font-weight:800; color:#fff;">Canchas El Campín 5</h3>
+                        </div>
+                        <div id="checkoutTime" style="font-size: 12px; font-weight:700; color:var(--gold);">19:00 - 20:00</div>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-bottom:6px;">
+                        <span>Alquiler Cancha (1 Hora):</span>
+                        <span id="checkoutBasePrice" style="color:#fff; font-weight:700;">$120.000</span>
+                    </div>
+
+                    <div id="checkoutExtrasList" style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">
+                        <!-- Injected dynamic extras -->
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-subtle); padding-top:12px;">
+                        <span style="font-weight:800; font-size:14px;">TOTAL A PAGAR:</span>
+                        <span id="checkoutTotalFinal" style="color:var(--primary); font-weight:900; font-size:22px;">$120.000</span>
+                    </div>
                 </div>
 
-                <div class="extra-card" onclick="toggleExtra(this, 7000)">
-                    <div><p style="font-weight: 700; font-size: 15px;">⚡ Gatorade Frío</p><p style="font-size: 11px; color: var(--text-dim);">Entregado en la cancha</p></div>
-                    <div style="display: flex; align-items: center; gap: 12px;"><span style="color: var(--gold); font-weight: 800;">+$7k</span><div class="check-dot"></div></div>
+                <!-- Payment Methods -->
+                <div style="margin: 20px 0;">
+                    <span class="section-tag" style="margin-bottom: 10px; display:block;">💳 MÉTODO DE PAGO</span>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <label style="background:var(--bg-card); border:1px solid var(--border-neon); border-radius:var(--radius-md); padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;">
+                            <input type="radio" name="paymethod" checked style="accent-color: var(--primary);">
+                            <span style="font-size:18px;">📱</span>
+                            <div style="flex:1;">
+                                <div style="font-weight:800; font-size:13px;">Nequi / Daviplata</div>
+                                <div style="font-size:11px; color:var(--text-muted);">Transferencia instantánea</div>
+                            </div>
+                        </label>
+                        <label style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px; display:flex; align-items:center; gap:12px; cursor:pointer;">
+                            <input type="radio" name="paymethod" style="accent-color: var(--primary);">
+                            <span style="font-size:18px;">🏦</span>
+                            <div style="flex:1;">
+                                <div style="font-weight:800; font-size:13px;">PSE / Tarjeta Débito o Crédito</div>
+                                <div style="font-size:11px; color:var(--text-muted);">Aprobación inmediata</div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
 
-                <div class="extra-card" onclick="toggleExtra(this, 5000)">
-                    <div><p style="font-weight: 700; font-size: 15px;">🛡️ Alquiler de Canilleras</p><p style="font-size: 11px; color: var(--text-dim);">Protección profesional</p></div>
-                    <div style="display: flex; align-items: center; gap: 12px;"><span style="color: var(--gold); font-weight: 800;">+$5k</span><div class="check-dot"></div></div>
+                <button class="btn-cta-main" style="margin-top:10px;" onclick="completeBooking()">
+                    <span>CONFIRMAR Y EMITIR TICKET 🎟️</span>
+                    <span id="btnPayVal">$120.000</span>
+                </button>
+            </div>
+        </section>
+
+
+        <!-- SCREEN 4: TICKET CONFIRMADO PASS -->
+        <section class="screen" id="ticketScreen">
+            <div class="content-wrap" style="padding-top: 24px; text-align:center;">
+                <div style="font-size: 40px; margin-bottom:8px;">🏆</div>
+                <h1 class="hero-title" style="font-size: 24px;">¡PARTIDO <span class="highlight">CONFIRMADO!</span></h1>
+                <p class="hero-subtitle">Tu reserva y extras VIP están listos para la fecha</p>
+
+                <div class="ticket-card">
+                    <div style="background:var(--primary); color:#000; font-weight:900; font-size:11px; padding:4px 10px; border-radius:var(--radius-full); display:inline-block; margin-bottom:10px;">
+                        MATCH PASS OFICIAL #FT-2026-88
+                    </div>
+                    <h2 id="passVenue" style="font-size: 20px; font-weight:800;">Canchas El Campín 5</h2>
+                    <p id="passTime" style="color:var(--gold); font-weight:700; font-size:13px; margin:4px 0 12px;">📅 Hoy • ⏰ 19:00 - 20:00</p>
+                    
+                    <div class="qr-placeholder">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=FUTBOLTOTAL-MATCH-VERIFIED-2026" alt="QR Code Matchday">
+                    </div>
+                    <p style="font-size: 10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px;">Muestra este código en la recepción de la cancha</p>
                 </div>
 
-                <div class="extra-card" onclick="toggleExtra(this, 3000)">
-                    <div><p style="font-weight: 700; font-size: 15px;">🗼 Alquiler de Torretines</p><p style="font-size: 11px; color: var(--text-dim);">Para entrenamiento específico</p></div>
-                    <div style="display: flex; align-items: center; gap: 12px;"><span style="color: var(--gold); font-weight: 800;">+$3k</span><div class="check-dot"></div></div>
+                <button class="btn-whatsapp-share" onclick="shareMatchWhatsApp()">
+                    <span>📲 Compartir Convocatoria con el Equipo</span>
+                </button>
+
+                <button onclick="goToScreen('exploreScreen')" style="background:var(--bg-card); border:1px solid var(--border-subtle); color:#fff; padding:14px; border-radius:var(--radius-md); font-weight:700; font-size:13px; width:100%; margin-top:10px; cursor:pointer;">
+                    Volver a Explorar Partidos
+                </button>
+            </div>
+        </section>
+
+
+        <!-- SCREEN 5: CHAT COMUNIDAD -->
+        <section class="screen" id="chatScreen">
+            <div class="content-wrap" style="padding-top: 18px;">
+                <h1 class="hero-title" style="font-size: 24px;">CHATS DE <span class="highlight">EQUIPO</span></h1>
+                <p class="hero-subtitle">Coordina con tus compañeros antes del pitazo inicial</p>
+
+                <div style="margin: 16px 0; display:flex; flex-direction:column; gap:10px;">
+                    <div style="background:var(--bg-card); border:1px solid var(--border-neon); border-radius:var(--radius-md); padding:14px; cursor:pointer; display:flex; gap:12px; align-items:center;">
+                        <div style="position:relative;">
+                            <img src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=100" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
+                            <span style="position:absolute; bottom:0; right:0; width:12px; height:12px; background:var(--primary); border-radius:50%; border:2px solid #000;"></span>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between;">
+                                <h4 style="font-size:14px; font-weight:800; color:#fff;">Salitre 8:00PM (Sábados)</h4>
+                                <span style="font-size:10px; color:var(--text-dim);">18:42</span>
+                            </div>
+                            <p style="font-size:12px; color:var(--text-muted); margin-top:3px;">Juan: ¡Recuerden llevar petos azules!</p>
+                        </div>
+                    </div>
+
+                    <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:14px; cursor:pointer; display:flex; gap:12px; align-items:center;">
+                        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=100" style="width:48px; height:48px; border-radius:50%; object-fit:cover;">
+                        <div style="flex:1;">
+                            <div style="display:flex; justify-content:space-between;">
+                                <h4 style="font-size:14px; font-weight:800; color:#fff;">Torneo Relámpago Norte</h4>
+                                <span style="font-size:10px; color:var(--text-dim);">Ayer</span>
+                            </div>
+                            <p style="font-size:12px; color:var(--text-muted); margin-top:3px;">Organizador: Fotos listas en la galería.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div style="margin-top: 40px; border-top: 1px solid var(--border); padding-top: 20px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                    <span style="font-weight: 700;">TOTAL FINAL</span>
-                    <span id="finalTotal" style="color: var(--neon); font-weight: 900; font-size: 24px;">$25.000</span>
+
+        <!-- SCREEN 6: PERFIL DEL JUGADOR -->
+        <section class="screen" id="profileScreen">
+            <div class="content-wrap" style="padding-top: 18px;">
+                <h1 class="hero-title" style="font-size: 24px;">MI TARJETA <span class="highlight">PRO</span></h1>
+                <p class="hero-subtitle">Tus estadísticas de juego y datos de jugador</p>
+
+                <div style="background: linear-gradient(135deg, #181822 0%, #0d0d12 100%); border:1px solid var(--border-neon); border-radius:var(--radius-lg); padding:20px; margin:16px 0; text-align:center; position:relative; box-shadow:0 0 25px rgba(204,255,0,0.08);">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200" style="width:80px; height:80px; border-radius:50%; border:3px solid var(--primary); object-fit:cover; margin-bottom:10px;">
+                    <h2 style="font-size: 20px; font-weight:900;">Camilo Torres</h2>
+                    <p style="color:var(--primary); font-size:12px; font-weight:800;">⚽ Delantero Centro (DC) • Pierna Diestra</p>
+
+                    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-top:16px; border-top:1px solid var(--border-subtle); padding-top:14px;">
+                        <div>
+                            <div style="font-size:18px; font-weight:900; color:var(--primary);">28</div>
+                            <div style="font-size:10px; color:var(--text-dim); text-transform:uppercase;">Partidos</div>
+                        </div>
+                        <div>
+                            <div style="font-size:18px; font-weight:900; color:var(--gold);">19</div>
+                            <div style="font-size:10px; color:var(--text-dim); text-transform:uppercase;">Goles</div>
+                        </div>
+                        <div>
+                            <div style="font-size:18px; font-weight:900; color:#fff;">5 🏆</div>
+                            <div style="font-size:10px; color:var(--text-dim); text-transform:uppercase;">MVP Match</div>
+                        </div>
+                    </div>
                 </div>
-                <button class="btn-main" onclick="alert('⚽ ¡Reserva Exitosa!\nTe esperamos en la cancha.')">CONFIRMAR Y PAGAR</button>
-            </div>
-        </div>
-    </div>
 
-    <div class="screen" id="chatScreen">
-        <div class="content-padding" style="margin-top: 10px;">
-            <h1 class="section-title">Mis <span>Chats</span></h1>
-            <input type="text" class="chat-search" placeholder="Buscar jugador por nombre...">
-            <div class="chat-item" style="border: 1px solid var(--neon); border-radius: 12px; margin-bottom: 15px; background: rgba(204, 255, 0, 0.05);">
-                <div class="player-avatar" style="width: 45px; height: 45px; border-color: var(--neon);"><img src="https://cdn-icons-png.flaticon.com/512/33/33736.png"></div>
-                <div class="chat-info" style="margin-left:15px;">
-                    <h4 style="color: var(--neon);">Grupo: Salitre 8:00PM (Sáb)</h4>
-                    <p style="color: var(--text-dim); font-size: 12px;">Carlos: ¡Muchachos, lleven petos azules!</p>
+                <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:16px;">
+                    <span class="section-tag" style="margin-bottom:12px; display:block;">⚙️ PREFERENCIAS</span>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--border-subtle);">
+                        <span style="font-size:13px;">Notificaciones de partidos nuevos</span>
+                        <input type="checkbox" checked style="accent-color:var(--primary);">
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
+                        <span style="font-size:13px;">Guardar fotos pro en mi galería</span>
+                        <input type="checkbox" checked style="accent-color:var(--primary);">
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div class="screen" id="profileScreen">
-        <div class="content-padding" style="margin-top: 10px;">
-            <h1 class="section-title">Mi <span>Perfil</span></h1>
-            <div class="input-group" style="margin-top:20px;"><label>Nombre</label><input type="text" value="Camilo Torres"></div>
-            <div class="input-group"><label>Posición</label><select><option>Portero</option><option selected>Delantero</option></select></div>
-            <button class="btn-main" style="width:100%; justify-content:center;">GUARDAR</button>
-        </div>
-    </div>
+    </main>
 
+    <!-- Bottom Tab Navigation Bar -->
     <nav class="bottom-nav">
-        <div class="nav-item active" onclick="showScreen('exploreScreen', this)">
-            <span class="nav-icon">🏟️</span><span>JUGAR</span>
-        </div>
-        <div class="nav-item" onclick="showScreen('chatScreen', this)">
-            <span class="nav-icon">💬</span><span>CHAT</span>
-        </div>
-        <div class="nav-item" onclick="showScreen('profileScreen', this)">
-            <span class="nav-icon">👤</span><span>PERFIL</span>
-        </div>
+        <button class="nav-btn active" onclick="goToNavScreen('exploreScreen', this)">
+            <span class="nav-icon">🏟️</span>
+            <span>JUGAR</span>
+        </button>
+        <button class="nav-btn" onclick="goToNavScreen('chatScreen', this)">
+            <span class="nav-icon">💬</span>
+            <span>CHATS</span>
+        </button>
+        <button class="nav-btn" onclick="goToNavScreen('profileScreen', this)">
+            <span class="nav-icon">👤</span>
+            <span>PERFIL</span>
+        </button>
     </nav>
+
 </div>
 
 <script>
-    let currentBasePrice = 25000;
-    let extraTotal = 0;
+    // State Data
+    let selectedDayIndex = 0;
+    let selectedZone = 'all';
+    let selectedFormat = 'all';
+    let splitFriendsCount = 10;
+    let activeMatch = null;
+    let selectedExtras = new Map();
+    let comboActive = false;
 
-    const matchesData = {
+    // Database Mock de Canchas y Partidos por Día
+    const databaseMatches = {
         0: [
-            { name: "Canchas El Campín 5", price: 25000, time: "19:00 - 20:00", spots: 4, type: "⚽ 5v5", img: "https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=600" },
-            { name: "Salitre Alto Rendimiento", price: 22000, time: "21:30 - 22:30", spots: 2, type: "⚽ 6v6", img: "https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=600" }
+            {
+                id: 'm1',
+                name: 'Canchas El Campín 5',
+                zone: 'Salitre',
+                format: '6v6',
+                price: 120000,
+                time: '19:00 - 20:00',
+                spots: 4,
+                totalSpots: 12,
+                surface: 'Sintética FIFA 2-Star',
+                img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=700',
+                location: 'Av. NQS # 53-80, Teusaquillo'
+            },
+            {
+                id: 'm2',
+                name: 'Salitre Alto Rendimiento',
+                zone: 'Salitre',
+                format: '5v5',
+                price: 110000,
+                time: '20:30 - 21:30',
+                spots: 2,
+                totalSpots: 10,
+                surface: 'Techada Premium',
+                img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=700',
+                location: 'Calle 63 # 68-45'
+            },
+            {
+                id: 'm3',
+                name: 'Sede Norte Elite 170',
+                zone: 'Zona Norte',
+                format: '8v8',
+                price: 180000,
+                time: '21:00 - 22:00',
+                spots: 6,
+                totalSpots: 16,
+                surface: 'Grama Sintética Monofilamento',
+                img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700',
+                location: 'Autopista Norte con Calle 170'
+            }
         ],
         1: [
-            { name: "Sede Norte Elite", price: 28000, time: "18:00 - 19:00", spots: 10, type: "⚽ 6v6", img: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600" }
+            {
+                id: 'm4',
+                name: 'Club Chapinero Fútbol 5',
+                zone: 'Chapinero',
+                format: '5v5',
+                price: 100000,
+                time: '18:00 - 19:00',
+                spots: 3,
+                totalSpots: 10,
+                surface: 'Sintética Climatizada',
+                img: 'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=700',
+                location: 'Carrera 7 # 63-20'
+            },
+            {
+                id: 'm5',
+                name: 'Complejo Calle 80 Arena',
+                zone: 'Calle 80',
+                format: '6v6',
+                price: 130000,
+                time: '20:00 - 21:00',
+                spots: 5,
+                totalSpots: 12,
+                surface: 'Césped Sintético 50mm',
+                img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700',
+                location: 'Av. Calle 80 # 72-10'
+            }
+        ],
+        2: [
+            {
+                id: 'm6',
+                name: 'Suba Imperial Stadium',
+                zone: 'Suba',
+                format: '11v11',
+                price: 250000,
+                time: '20:00 - 22:00',
+                spots: 8,
+                totalSpots: 22,
+                surface: 'Cancha Reglamentaria 11',
+                img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700',
+                location: 'Av. Suba # 128-40'
+            }
         ]
     };
 
-    function setupCalendar() {
-        const slider = document.getElementById('dateSlider');
-        const days = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'];
+    // Initialize Calendar Slider with Next 10 Days
+    function initCalendar() {
+        const slider = document.getElementById('calendarSlider');
+        slider.innerHTML = '';
+        const dayNames = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+        const monthNames = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+        
         const today = new Date();
-        for (let i = 0; i < 7; i++) {
-            const date = new Date();
-            date.setDate(today.getDate() + i);
-            const item = document.createElement('div');
-            item.className = `date-item ${i === 0 ? 'active' : ''}`;
-            item.innerHTML = `<span>${days[date.getDay()]}</span><span>${date.getDate()}</span>`;
-            item.onclick = () => {
-                document.querySelectorAll('.date-item').forEach(d => d.classList.remove('active'));
-                item.classList.add('active');
-                renderMatches(i);
+        document.getElementById('currentMonthName').innerText = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
+
+        for (let i = 0; i < 10; i++) {
+            const d = new Date();
+            d.setDate(today.getDate() + i);
+            const matchesCount = (databaseMatches[i] || []).length;
+
+            const card = document.createElement('div');
+            card.className = `cal-day-card ${i === selectedDayIndex ? 'active' : ''}`;
+            card.innerHTML = `
+                <span class="cal-day-name">${i === 0 ? 'HOY' : dayNames[d.getDay()]}</span>
+                <span class="cal-day-num">${d.getDate()}</span>
+                <span class="cal-day-matches">${matchesCount} ${matchesCount === 1 ? 'partido' : 'partidos'}</span>
+            `;
+            card.onclick = () => {
+                selectedDayIndex = i;
+                document.querySelectorAll('.cal-day-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                renderMatches();
             };
-            slider.appendChild(item);
+            slider.appendChild(card);
         }
-        renderMatches(0);
     }
 
-    function renderMatches(dayIndex) {
+    // Render Filtered Matches
+    function renderMatches() {
         const container = document.getElementById('matchList');
-        const matches = matchesData[dayIndex] || [];
-        container.innerHTML = matches.length ? '' : '<p style="color:gray; padding:20px;">No hay partidos.</p>';
-        matches.forEach(m => {
-            container.innerHTML += `
-                <div class="match-item" onclick="openMatch('${m.name}', ${m.price}, '${m.img}', '${m.time}', '${m.type}')">
-                    <div class="match-time-box"><span class="match-time">${m.time.split(' ')[0]}</span></div>
-                    <div class="match-info">
-                        <div class="match-name">${m.name}</div>
-                        <div class="match-meta"><span>${m.type}</span><span>🌱 Sintética</span></div>
-                        <span class="spots-badge">${m.spots} CUPOS LIBRES</span>
-                    </div>
-                </div>`;
+        const countLabel = document.getElementById('matchCountLabel');
+        const searchVal = (document.getElementById('searchInput').value || '').toLowerCase();
+        
+        const dayMatches = databaseMatches[selectedDayIndex] || [];
+        const filtered = dayMatches.filter(m => {
+            const matchesZone = selectedZone === 'all' || m.zone === selectedZone;
+            const matchesFormat = selectedFormat === 'all' || m.format === selectedFormat;
+            const matchesSearch = !searchVal || m.name.toLowerCase().includes(searchVal) || m.location.toLowerCase().includes(searchVal);
+            return matchesZone && matchesFormat && matchesSearch;
         });
+
+        countLabel.innerText = `${filtered.length} ${filtered.length === 1 ? 'partido disponible' : 'partidos disponibles'}`;
+
+        if (filtered.length === 0) {
+            container.innerHTML = `
+                <div style="background:var(--bg-card); border:1px dashed var(--border-subtle); border-radius:var(--radius-md); padding:30px 20px; text-align:center;">
+                    <div style="font-size:32px; margin-bottom:8px;">⚽</div>
+                    <h3 style="font-size:15px; font-weight:800; color:#fff;">No hay partidos con estos filtros</h3>
+                    <p style="font-size:12px; color:var(--text-dim); margin-top:4px;">Prueba seleccionando otro día o quitando los filtros de zona.</p>
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = filtered.map(m => `
+            <div class="match-card" onclick="openMatchDetail('${m.id}')">
+                <div class="match-card-media">
+                    <img src="${m.img}" alt="${m.name}" loading="lazy">
+                    <div class="match-card-overlay"></div>
+                    <div class="match-badge-top-left">
+                        <span>⏰ ${m.time}</span>
+                    </div>
+                    <div class="match-badge-top-right">
+                        <span>${m.format}</span>
+                    </div>
+                </div>
+                <div class="match-card-body">
+                    <div class="match-header-row">
+                        <div>
+                            <h3 class="match-venue-name">${m.name}</h3>
+                            <div class="match-location-text">📍 ${m.location}</div>
+                        </div>
+                        <div class="match-price-tag">
+                            <div class="match-price-val">$${(m.price / 10).toLocaleString('es-CO')}</div>
+                            <div class="match-price-sub">/ por jugador</div>
+                        </div>
+                    </div>
+
+                    <div class="match-tags-row">
+                        <span class="mini-tag">🌱 ${m.surface}</span>
+                        <span class="mini-tag">🚿 Duchas VIP</span>
+                        <span class="mini-tag">💡 Luz LED 500 Lux</span>
+                        <span class="mini-tag">📸 Extras Disponibles</span>
+                    </div>
+
+                    <div class="match-footer-row">
+                        <div class="spots-indicator">
+                            <div class="spots-bar-bg">
+                                <div class="spots-bar-fill" style="width: ${( (m.totalSpots - m.spots) / m.totalSpots ) * 100}%"></div>
+                            </div>
+                            <span class="spots-label">${m.spots} cupos libres</span>
+                        </div>
+                        <button class="btn-view-match">VER DETALLE & EXTRAS →</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
     }
 
-    function openMatch(name, price, imgUrl, time, type) {
-        currentBasePrice = price;
-        extraTotal = 0;
-        document.getElementById('detName').innerText = name;
-        document.getElementById('detPrice').innerText = '$' + price.toLocaleString('es-CO');
-        document.getElementById('finalTotal').innerText = '$' + price.toLocaleString('es-CO');
-        document.getElementById('detTime').innerText = '⏰ ' + time;
-        document.getElementById('detType').innerText = type;
-        document.getElementById('fieldBanner').style.backgroundImage = `url(${imgUrl})`;
-        document.querySelectorAll('.extra-card').forEach(c => c.classList.remove('selected'));
-        showScreen('detailScreen');
+    // Filter Handlers
+    function setZoneFilter(zone, btn) {
+        selectedZone = zone;
+        document.querySelectorAll('#zoneFilters .filter-chip').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        renderMatches();
     }
 
-    function toggleExtra(el, price) {
-        el.classList.toggle('selected');
-        extraTotal += el.classList.contains('selected') ? price : -price;
-        document.getElementById('finalTotal').innerText = '$' + (currentBasePrice + extraTotal).toLocaleString('es-CO');
+    function setFormatFilter(format, btn) {
+        selectedFormat = format;
+        document.querySelectorAll('#formatFilters .filter-chip').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        renderMatches();
     }
 
-    function showScreen(id, navEl) {
+    function applyFilters() {
+        renderMatches();
+    }
+
+    // Open Match Details
+    function openMatchDetail(matchId) {
+        let found = null;
+        Object.values(databaseMatches).forEach(dayList => {
+            const m = dayList.find(x => x.id === matchId);
+            if (m) found = m;
+        });
+
+        if (!found) return;
+        activeMatch = found;
+        selectedExtras.clear();
+        comboActive = false;
+        document.querySelectorAll('.extra-item-card').forEach(c => c.classList.remove('selected'));
+        const comboCard = document.getElementById('comboPackCard');
+        if (comboCard) comboCard.classList.remove('selected');
+
+        document.getElementById('detTitle').innerText = found.name;
+        document.getElementById('detCategory').innerText = `SEDE PREMIUM • ${found.zone.toUpperCase()}`;
+        document.getElementById('detTime').innerText = found.time;
+        document.getElementById('detFormat').innerText = found.format;
+        document.getElementById('detailBanner').style.backgroundImage = `url(${found.img})`;
+
+        updatePrices();
+        goToScreen('detailScreen');
+    }
+
+    // Toggle Single Extra Item
+    function toggleExtra(card) {
+        const extraId = card.getAttribute('data-id');
+        const price = parseInt(card.getAttribute('data-price'), 10);
+
+        if (card.classList.contains('selected')) {
+            card.classList.remove('selected');
+            selectedExtras.delete(extraId);
+        } else {
+            card.classList.add('selected');
+            selectedExtras.set(extraId, price);
+        }
+        updatePrices();
+    }
+
+    // Toggle Combo Pack
+    function toggleComboPack() {
+        comboActive = !comboActive;
+        const comboCard = document.getElementById('comboPackCard');
+        comboCard.classList.toggle('selected', comboActive);
+        updatePrices();
+    }
+
+    // Update Price Computations
+    function updatePrices() {
+        if (!activeMatch) return;
+        let base = activeMatch.price;
+        let extrasSum = 0;
+        selectedExtras.forEach(p => extrasSum += p);
+        if (comboActive) extrasSum += 55000;
+
+        const grandTotal = base + extrasSum;
+        const perPerson = Math.round(grandTotal / splitFriendsCount);
+
+        document.getElementById('ctaGrandTotal').innerText = `$${grandTotal.toLocaleString('es-CO')}`;
+        document.getElementById('splitPricePerPerson').innerText = `$${perPerson.toLocaleString('es-CO')} / persona`;
+    }
+
+    // Split Calculator
+    function changeSplitPlayers(delta) {
+        splitFriendsCount = Math.max(2, Math.min(22, splitFriendsCount + delta));
+        document.getElementById('splitPlayersCount').innerText = `${splitFriendsCount} amigos`;
+        updatePrices();
+    }
+
+    // Claim Slot Demo
+    function claimSlot() {
+        showToast('⚽ ¡Te has unido al partido con éxito!');
+        document.getElementById('confirmedCount').innerText = '8';
+    }
+
+    // Screen Switching
+    function goToScreen(screenId) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if(navEl) {
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            navEl.classList.add('active');
+        const target = document.getElementById(screenId);
+        if (target) {
+            target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Prepare checkout data if moving to checkout
+        if (screenId === 'checkoutScreen' && activeMatch) {
+            document.getElementById('checkoutVenueName').innerText = activeMatch.name;
+            document.getElementById('checkoutTime').innerText = activeMatch.time;
+            document.getElementById('checkoutBasePrice').innerText = `$${activeMatch.price.toLocaleString('es-CO')}`;
+
+            let extrasHtml = '';
+            if (comboActive) {
+                extrasHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:4px; color:var(--gold);"><span>🔥 Combo Capitán VIP:</span><span>$55.000</span></div>`;
+            }
+            selectedExtras.forEach((price, id) => {
+                extrasHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>+ Extra ${id.toUpperCase()}:</span><span>$${price.toLocaleString('es-CO')}</span></div>`;
+            });
+            document.getElementById('checkoutExtrasList').innerHTML = extrasHtml || '<span style="color:var(--text-dim);">Sin extras adicionales</span>';
+
+            let base = activeMatch.price;
+            let extrasSum = 0;
+            selectedExtras.forEach(p => extrasSum += p);
+            if (comboActive) extrasSum += 55000;
+            const grandTotal = base + extrasSum;
+            document.getElementById('checkoutTotalFinal').innerText = `$${grandTotal.toLocaleString('es-CO')}`;
+            document.getElementById('btnPayVal').innerText = `$${grandTotal.toLocaleString('es-CO')}`;
         }
     }
 
-    setInterval(() => {
-        const now = new Date();
-        document.getElementById('currentTime').innerText = now.getHours() + ":" + String(now.getMinutes()).padStart(2, '0');
-    }, 1000);
+    function goToNavScreen(screenId, btn) {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        goToScreen(screenId);
+    }
 
-    setupCalendar();
+    // Complete Booking -> Show Ticket
+    function completeBooking() {
+        if (!activeMatch) return;
+        document.getElementById('passVenue').innerText = activeMatch.name;
+        document.getElementById('passTime').innerText = `📅 Hoy • ⏰ ${activeMatch.time}`;
+        goToScreen('ticketScreen');
+    }
+
+    // Share Matchday Summary in WhatsApp
+    function shareMatchWhatsApp() {
+        if (!activeMatch) return;
+        let base = activeMatch.price;
+        let extrasSum = 0;
+        selectedExtras.forEach(p => extrasSum += p);
+        if (comboActive) extrasSum += 55000;
+        const grandTotal = base + extrasSum;
+        const perPerson = Math.round(grandTotal / splitFriendsCount);
+
+        const text = `⚽ *¡CONVOCATORIA FÚTBOL TOTAL!* ⚽%0A%0A` +
+                     `🏟️ *Cancha:* ${activeMatch.name}%0A` +
+                     `⏰ *Hora:* ${activeMatch.time}%0A` +
+                     `📍 *Ubicación:* ${activeMatch.location}%0A` +
+                     `✨ *Extras VIP:* ${comboActive ? 'Combo Capitán Pro' : (selectedExtras.size > 0 ? selectedExtras.size + ' extras' : 'Cancha lista')}%0A` +
+                     `💰 *Cuota por jugador:* $${perPerson.toLocaleString('es-CO')} COP (${splitFriendsCount} personas)%0A%0A` +
+                     `🔗 *Confirma tu asistencia aquí:* https://jcamacho1720-bit.github.io/FutbolTotal/`;
+        
+        window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        showToast('📲 ¡Resumen listo para WhatsApp!');
+    }
+
+    // Toast Notification helper
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Initialize App
+    initCalendar();
+    renderMatches();
 </script>
 
 </body>
