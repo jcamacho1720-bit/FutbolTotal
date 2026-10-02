@@ -6,7 +6,7 @@
     <title>Fútbol Total | Matchday Club & Canchas</title>
     <meta name="description" content="Reserva de canchas de fútbol exclusivas, alineaciones tácticas y servicios matchday premium.">
     
-    <!-- Google Fonts: Syne (Headings) & Plus Jakarta Sans (Body) -->
+    <!-- Google Fonts: Syne & Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
@@ -65,7 +65,6 @@
             letter-spacing: -0.01em;
         }
 
-        /* Ambient subtle light glow */
         .ambient-light {
             position: fixed;
             top: -120px;
@@ -78,7 +77,6 @@
             z-index: 0;
         }
 
-        /* Container Shell */
         .app-shell {
             width: 100%;
             max-width: 480px;
@@ -92,14 +90,14 @@
             box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
         }
 
-        /* Top Header */
+        /* Header */
         .header {
             padding: 18px 22px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border-hairline);
-            background: rgba(12, 12, 16, 0.9);
+            background: rgba(12, 12, 16, 0.92);
             backdrop-filter: blur(16px);
             position: sticky;
             top: 0;
@@ -139,25 +137,25 @@
             color: var(--neon);
         }
 
-        .btn-header-create {
+        .header-status-badge {
             display: flex;
             align-items: center;
             gap: 6px;
-            background: var(--neon-subtle);
-            border: 1px solid var(--neon-border);
-            color: var(--neon);
             font-size: 11px;
             font-weight: 700;
-            padding: 6px 13px;
+            color: var(--text-secondary);
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-hairline);
+            padding: 5px 11px;
             border-radius: var(--radius-full);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            letter-spacing: 0.02em;
         }
 
-        .btn-header-create:hover {
+        .status-dot-active {
+            width: 6px;
+            height: 6px;
             background: var(--neon);
-            color: #000;
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--neon);
         }
 
         /* Screens Manager */
@@ -186,7 +184,7 @@
             padding: 0 20px;
         }
 
-        /* Hero Typography */
+        /* Hero */
         .hero {
             padding: 24px 20px 14px;
         }
@@ -221,15 +219,14 @@
             color: var(--text-secondary);
             margin-top: 8px;
             line-height: 1.45;
-            font-weight: 400;
         }
 
-        /* Calendar */
-        .calendar-section {
-            margin: 14px 0;
+        /* Enhanced Calendar Hub */
+        .calendar-hub {
+            margin: 14px 0 16px;
         }
 
-        .section-headline {
+        .calendar-header-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -237,22 +234,41 @@
             margin-bottom: 12px;
         }
 
-        .section-label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-muted);
+        .cal-view-toggle {
             display: flex;
-            align-items: center;
-            gap: 6px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-full);
+            padding: 3px;
+            gap: 2px;
         }
 
+        .view-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.15s ease;
+        }
+
+        .view-btn.active {
+            background: var(--neon);
+            color: #000;
+        }
+
+        /* Horizontal Strip View */
         .calendar-strip {
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding: 4px 20px 10px;
+            padding: 4px 20px 8px;
             scrollbar-width: none;
         }
 
@@ -320,7 +336,126 @@
             background: transparent;
         }
 
-        /* Filters System */
+        /* Full Month Calendar Grid View */
+        .month-calendar-card {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin: 0 20px;
+        }
+
+        .month-calendar-card.open {
+            display: block;
+        }
+
+        .month-nav-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .month-title {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #fff;
+        }
+
+        .month-nav-arrows {
+            display: flex;
+            gap: 6px;
+        }
+
+        .arrow-btn {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-secondary);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .arrow-btn:hover {
+            border-color: var(--neon);
+            color: var(--neon);
+        }
+
+        .weekdays-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        .day-cell {
+            height: 38px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid transparent;
+            position: relative;
+            transition: all 0.15s ease;
+            color: var(--text-secondary);
+        }
+
+        .day-cell:hover:not(.empty) {
+            background: var(--bg-elevated);
+            border-color: var(--border-hover);
+            color: #fff;
+        }
+
+        .day-cell.active {
+            background: var(--neon) !important;
+            color: #000 !important;
+            font-weight: 800;
+            box-shadow: 0 4px 14px rgba(212, 255, 0, 0.25);
+        }
+
+        .day-cell.has-matches::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--neon);
+            border-radius: 50%;
+            position: absolute;
+            bottom: 3px;
+        }
+
+        .day-cell.active.has-matches::after {
+            background: #000;
+        }
+
+        .day-cell.empty {
+            cursor: default;
+            opacity: 0.2;
+        }
+
+        /* Filters Hub */
         .filters-hub {
             padding: 0 20px 16px;
             display: flex;
@@ -1126,10 +1261,10 @@
             <div class="brand-logo-mark">F</div>
             <div class="brand-name">FÚTBOL<span>TOTAL</span></div>
         </div>
-        <button class="btn-header-create" onclick="openCreateMatchModal()">
-            <i data-lucide="plus" style="width:14px; height:14px;"></i>
-            <span>Publicar</span>
-        </button>
+        <div class="header-status-badge">
+            <span class="status-dot-active"></span>
+            <span>BOGOTÁ</span>
+        </div>
     </header>
 
     <!-- Scrollable Screens Container -->
@@ -1140,22 +1275,50 @@
             <div class="hero">
                 <div class="eyebrow">
                     <i data-lucide="shield-check" style="width:13px; height:13px;"></i>
-                    <span>Sedes & Partidos Bogotá</span>
+                    <span>Canchas & Club Exclusivo</span>
                 </div>
                 <h1 class="hero-title">RESERVA TU <span>CANCHA</span></h1>
-                <p class="hero-desc">Sedes sintéticas certificadas, servicio matchday VIP y armado táctico.</p>
+                <p class="hero-desc">Sedes sintéticas verificadas con servicios matchday VIP y armado táctico.</p>
             </div>
 
-            <!-- Calendar Strip -->
-            <div class="calendar-section">
-                <div class="section-headline">
-                    <span class="section-label">
-                        <i data-lucide="calendar" style="width:13px; height:13px;"></i>
-                        <span>Calendario</span>
-                    </span>
-                    <span id="currentMonthTxt" style="font-size: 11px; font-weight: 700; color: var(--neon); text-transform: uppercase;">MAYO 2026</span>
+            <!-- Enhanced Calendar Hub (Dual View: Strip vs Full Month Grid) -->
+            <div class="calendar-hub">
+                <div class="calendar-header-bar">
+                    <span id="calCurrentLabel" style="font-size: 12px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.04em;">MAYO 2026</span>
+                    
+                    <div class="cal-view-toggle">
+                        <button class="view-btn active" id="btnViewStrip" onclick="setCalendarView('strip')">
+                            <i data-lucide="list" style="width:12px; height:12px;"></i>
+                            <span>Días</span>
+                        </button>
+                        <button class="view-btn" id="btnViewMonth" onclick="setCalendarView('month')">
+                            <i data-lucide="calendar" style="width:12px; height:12px;"></i>
+                            <span>Mes</span>
+                        </button>
+                    </div>
                 </div>
+
+                <!-- View 1: Horizontal Strip -->
                 <div class="calendar-strip" id="calendarSlider"></div>
+
+                <!-- View 2: Full Month Grid -->
+                <div class="month-calendar-card" id="monthCalendarCard">
+                    <div class="month-nav-header">
+                        <span class="month-title" id="gridMonthTitle">MAYO 2026</span>
+                        <div class="month-nav-arrows">
+                            <button class="arrow-btn" onclick="shiftMonth(-1)">
+                                <i data-lucide="chevron-left" style="width:14px; height:14px;"></i>
+                            </button>
+                            <button class="arrow-btn" onclick="shiftMonth(1)">
+                                <i data-lucide="chevron-right" style="width:14px; height:14px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="weekdays-grid">
+                        <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+                    </div>
+                    <div class="days-grid" id="monthDaysGrid"></div>
+                </div>
             </div>
 
             <!-- Filter Controls -->
@@ -1201,8 +1364,8 @@
 
             <!-- Matches List -->
             <div class="px-container" style="margin-bottom: 10px;">
-                <div class="section-headline" style="padding: 0;">
-                    <span class="section-label">
+                <div class="section-headline" style="padding: 0; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
                         <i data-lucide="layers" style="width:13px; height:13px;"></i>
                         <span>Partidos disponibles</span>
                     </span>
@@ -1264,8 +1427,8 @@
 
                     <!-- EXTRAS VIP HUB -->
                     <div style="margin-bottom: 20px;">
-                        <div class="section-headline" style="padding:0; margin-bottom:12px;">
-                            <span class="section-label">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                            <span style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--text-muted); display:flex; align-items:center; gap:6px;">
                                 <i data-lucide="sparkles" style="width:13px; height:13px;"></i>
                                 <span>Servicios VIP Matchday</span>
                             </span>
@@ -1353,7 +1516,6 @@
                         </button>
                     </div>
 
-                    <!-- Cancha Táctica 2D -->
                     <div class="tactical-pitch-box">
                         <div class="field-midline"></div>
                         <div class="field-circle"></div>
@@ -1568,56 +1730,6 @@
 
 </div>
 
-<!-- MODAL: CREAR PARTIDO -->
-<div class="modal-overlay" id="createMatchModal">
-    <div class="modal-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-            <h3 style="font-size:15px; font-weight:800; text-transform:uppercase;">Crear Nuevo Partido</h3>
-            <button onclick="closeCreateMatchModal()" style="background:none; border:none; color:var(--text-muted); cursor:pointer;">
-                <i data-lucide="x" style="width:18px; height:18px;"></i>
-            </button>
-        </div>
-
-        <label style="font-size:11px; color:var(--text-muted); font-weight:700;">NOMBRE DE LA SEDE</label>
-        <input type="text" id="newMatchName" class="form-input" placeholder="Ej: Canchas Campín Arena">
-
-        <label style="font-size:11px; color:var(--text-muted); font-weight:700; margin-top:10px; display:block;">ZONA</label>
-        <select id="newMatchZone" class="form-input">
-            <option value="Salitre">Salitre</option>
-            <option value="Norte">Norte</option>
-            <option value="Sur">Sur</option>
-            <option value="Chapinero">Chapinero</option>
-            <option value="Calle 80">Calle 80</option>
-            <option value="Suba">Suba</option>
-        </select>
-
-        <label style="font-size:11px; color:var(--text-muted); font-weight:700; margin-top:10px; display:block;">FORMATO & SUPERFICIE</label>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-            <select id="newMatchFormat" class="form-input">
-                <option value="5v5">Fútbol 5</option>
-                <option value="6v6" selected>Fútbol 6</option>
-                <option value="8v8">Fútbol 8</option>
-                <option value="11v11">Fútbol 11</option>
-            </select>
-            <select id="newMatchSurface" class="form-input">
-                <option value="Techada">Techada</option>
-                <option value="Abierta">Aire Libre</option>
-                <option value="Natural">Grama Natural</option>
-            </select>
-        </div>
-
-        <label style="font-size:11px; color:var(--text-muted); font-weight:700; margin-top:10px; display:block;">HORARIO & PRECIO TOTAL</label>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-            <input type="text" id="newMatchTime" class="form-input" value="20:00 - 21:00">
-            <input type="number" id="newMatchPrice" class="form-input" value="130000">
-        </div>
-
-        <button onclick="saveNewMatchCustom()" style="background:var(--neon); color:#000; border:none; padding:14px; border-radius:var(--radius-sm); font-weight:800; font-size:12px; width:100%; margin-top:16px; cursor:pointer; text-transform:uppercase; letter-spacing:0.04em;">
-            Publicar Partido
-        </button>
-    </div>
-</div>
-
 <!-- MODAL: UNIRME AL PARTIDO -->
 <div class="modal-overlay" id="joinMatchModal">
     <div class="modal-card">
@@ -1741,6 +1853,36 @@
             location: 'Av. Suba # 128-40',
             img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700',
             players: []
+        },
+        {
+            id: 'm6',
+            dayOffset: 4,
+            name: 'Calle 80 Pro Arena',
+            zone: 'Calle 80',
+            format: '6v6',
+            surface: 'Techada',
+            price: 130000,
+            time: '19:30 - 20:30',
+            spots: 5,
+            totalSpots: 12,
+            location: 'Av. Calle 80 # 72-10',
+            img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700',
+            players: []
+        },
+        {
+            id: 'm7',
+            dayOffset: 7,
+            name: 'Salitre Champions Park',
+            zone: 'Salitre',
+            format: '8v8',
+            surface: 'Abierta',
+            price: 190000,
+            time: '20:00 - 21:00',
+            spots: 8,
+            totalSpots: 16,
+            location: 'Calle 63 # 68-45',
+            img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=700',
+            players: []
         }
     ];
 
@@ -1766,24 +1908,49 @@
 
     // State
     let matchesList = getStoredMatches();
-    let selectedDayIndex = 0;
+    let selectedDayIndex = 0; // offset in days from today
     let selectedZone = 'all';
     let selectedFormat = 'all';
     let selectedSurface = 'all';
     let activeMatch = null;
     let activeExtras = new Map();
+    let calendarMode = 'strip'; // 'strip' or 'month'
+    let viewMonthDate = new Date(); // for month grid browsing
 
-    // 1. Dynamic Calendar
-    function renderCalendar() {
+    const dayNamesShort = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
+    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+    // 1. Calendar View Switcher (Strip vs Month Grid)
+    function setCalendarView(mode) {
+        calendarMode = mode;
+        const btnStrip = document.getElementById('btnViewStrip');
+        const btnMonth = document.getElementById('btnViewMonth');
+        const stripContainer = document.getElementById('calendarSlider');
+        const monthCard = document.getElementById('monthCalendarCard');
+
+        if (mode === 'strip') {
+            btnStrip.classList.add('active');
+            btnMonth.classList.remove('active');
+            stripContainer.style.display = 'flex';
+            monthCard.classList.remove('open');
+        } else {
+            btnMonth.classList.add('active');
+            btnStrip.classList.remove('active');
+            stripContainer.style.display = 'none';
+            monthCard.classList.add('open');
+            renderMonthGrid();
+        }
+        lucide.createIcons();
+    }
+
+    // Render 14-day horizontal strip
+    function renderCalendarStrip() {
         const slider = document.getElementById('calendarSlider');
         slider.innerHTML = '';
-        const dayNames = ['DOM', 'LUN', 'MAR', 'MIÉ', 'JUE', 'VIE', 'SÁB'];
-        const monthNames = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
-        
         const today = new Date();
-        document.getElementById('currentMonthTxt').innerText = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
+        document.getElementById('calCurrentLabel').innerText = `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
 
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 14; i++) {
             const d = new Date();
             d.setDate(today.getDate() + i);
             const count = matchesList.filter(m => m.dayOffset === i).length;
@@ -1791,7 +1958,7 @@
             const card = document.createElement('div');
             card.className = `cal-item ${i === selectedDayIndex ? 'active' : ''}`;
             card.innerHTML = `
-                <span class="cal-day-txt">${i === 0 ? 'HOY' : dayNames[d.getDay()]}</span>
+                <span class="cal-day-txt">${i === 0 ? 'HOY' : dayNamesShort[d.getDay()]}</span>
                 <span class="cal-day-num">${d.getDate()}</span>
                 <span class="cal-pill">${count} ${count === 1 ? 'partido' : 'partidos'}</span>
             `;
@@ -1800,9 +1967,72 @@
                 document.querySelectorAll('.cal-item').forEach(c => c.classList.remove('active'));
                 card.classList.add('active');
                 renderMatches();
+                if (calendarMode === 'month') renderMonthGrid();
             };
             slider.appendChild(card);
         }
+    }
+
+    // Render Full Month Calendar Grid
+    function renderMonthGrid() {
+        const grid = document.getElementById('monthDaysGrid');
+        grid.innerHTML = '';
+        
+        const year = viewMonthDate.getFullYear();
+        const month = viewMonthDate.getMonth();
+        document.getElementById('gridMonthTitle').innerText = `${monthNames[month]} ${year}`;
+
+        const firstDayOfMonth = new Date(year, month, 1);
+        const lastDayOfMonth = new Date(year, month + 1, 0);
+        
+        // Monday based index (0 = Monday, 6 = Sunday)
+        let firstDayIndex = firstDayOfMonth.getDay() - 1;
+        if (firstDayIndex === -1) firstDayIndex = 6;
+
+        const totalDays = lastDayOfMonth.getDate();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        // Blank days before month starts
+        for (let x = 0; x < firstDayIndex; x++) {
+            const emptyCell = document.createElement('div');
+            emptyCell.className = 'day-cell empty';
+            grid.appendChild(emptyCell);
+        }
+
+        // Real Days of month
+        for (let day = 1; day <= totalDays; day++) {
+            const currentCellDate = new Date(year, month, day);
+            currentCellDate.setHours(0, 0, 0, 0);
+            const diffTime = currentCellDate.getTime() - today.getTime();
+            const dayOffset = Math.round(diffTime / (1000 * 3600 * 24));
+
+            const hasMatches = matchesList.some(m => m.dayOffset === dayOffset);
+            const isSelected = selectedDayIndex === dayOffset;
+
+            const dayCell = document.createElement('div');
+            dayCell.className = `day-cell ${isSelected ? 'active' : ''} ${hasMatches ? 'has-matches' : ''}`;
+            dayCell.innerText = day;
+
+            dayCell.onclick = () => {
+                if (dayOffset >= 0) {
+                    selectedDayIndex = dayOffset;
+                    renderCalendarStrip();
+                    renderMonthGrid();
+                    renderMatches();
+                } else {
+                    showToast('Fecha pasada');
+                }
+            };
+
+            grid.appendChild(dayCell);
+        }
+    }
+
+    function shiftMonth(direction) {
+        viewMonthDate.setMonth(viewMonthDate.getMonth() + direction);
+        renderMonthGrid();
+        lucide.createIcons();
     }
 
     // 2. Render Matches
@@ -1827,8 +2057,8 @@
         if (filtered.length === 0) {
             container.innerHTML = `
                 <div style="background:var(--bg-card); border:1px dashed var(--border-hairline); border-radius:var(--radius-md); padding:30px 20px; text-align:center;">
-                    <div style="font-size:14px; font-weight:700; color:#fff;">No se encontraron canchas</div>
-                    <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Prueba ajustando los filtros de zona o formato.</p>
+                    <div style="font-size:14px; font-weight:700; color:#fff;">No se encontraron canchas para esta fecha</div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Selecciona otro día en el calendario o ajusta los filtros.</p>
                 </div>
             `;
             return;
@@ -2065,52 +2295,6 @@
         showToast(`${name} inscrito al partido`);
     }
 
-    // Modal Crear Partido
-    function openCreateMatchModal() {
-        document.getElementById('createMatchModal').classList.add('open');
-    }
-    function closeCreateMatchModal() {
-        document.getElementById('createMatchModal').classList.remove('open');
-    }
-
-    function saveNewMatchCustom() {
-        const name = document.getElementById('newMatchName').value.trim();
-        if (!name) {
-            alert('Ingresa el nombre de la cancha.');
-            return;
-        }
-        const zone = document.getElementById('newMatchZone').value;
-        const format = document.getElementById('newMatchFormat').value;
-        const surface = document.getElementById('newMatchSurface').value;
-        const time = document.getElementById('newMatchTime').value;
-        const price = parseInt(document.getElementById('newMatchPrice').value, 10) || 120000;
-
-        const totalSpots = format === '5v5' ? 10 : (format === '6v6' ? 12 : (format === '8v8' ? 16 : 22));
-
-        const newMatch = {
-            id: 'custom_' + Date.now(),
-            dayOffset: selectedDayIndex,
-            name: name,
-            zone: zone,
-            format: format,
-            surface: surface,
-            price: price,
-            time: time,
-            spots: totalSpots,
-            totalSpots: totalSpots,
-            location: `Bogotá - Sector ${zone}`,
-            img: 'https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=700',
-            players: []
-        };
-
-        matchesList.unshift(newMatch);
-        setStoredMatches(matchesList);
-        closeCreateMatchModal();
-        renderCalendar();
-        renderMatches();
-        showToast('Partido publicado exitosamente');
-    }
-
     function confirmFullBooking() {
         if (!activeMatch) return;
         let sum = activeMatch.price;
@@ -2240,7 +2424,7 @@
 
     // Initialize
     loadProfileData();
-    renderCalendar();
+    renderCalendarStrip();
     renderMatches();
     lucide.createIcons();
 </script>
